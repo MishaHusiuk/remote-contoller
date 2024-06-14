@@ -1,5 +1,6 @@
 import express, { Express } from "express";
 import swaggerUI from "swagger-ui-express";
+import { WebSocketServer, WebSocket } from "ws";
 import initRoutes from "./routes";
 import swaggerSpec from "./swagger";
 
