@@ -1,4 +1,13 @@
-import './App.css';
+// import './App.css';
+
+const handleClick = () => {
+  fetch(`${process.env.REACT_APP_API_URL}/command`, { 
+    method: 'POST', 
+    body: JSON.stringify({
+      command: 'ESC'
+    })
+  })
+}
 
 function App() {
   return (
@@ -6,7 +15,7 @@ function App() {
       <div className="p-8 bg-gray-600 flex flex-col justify-between h-full">
         <div className="grid grid-cols-3 grid-rows-3 gap-4">
           <div className="p-4 bg-teal-500 rounded-md flex items-center justify-center row-start-1 col-start-1">
-            <button onClick={() => alert('esc')}>esc</button>
+            <button onClick={handleClick}>esc</button>
           </div>
           <div className="p-4 bg-teal-500 rounded-md flex items-center justify-center row-start-1 col-start-2 col-span-2">
             <button onClick={() => alert('enter')}>enter</button>
