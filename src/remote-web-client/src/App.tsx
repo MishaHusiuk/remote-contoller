@@ -1,7 +1,7 @@
 // import './App.css';
 
 const handleClick = () => {
-  fetch(`${process.env.REACT_APP_API_URL}/command`, { 
+  fetch('/api/command', { 
     method: 'POST', 
     body: JSON.stringify({
       command: 'ESC'

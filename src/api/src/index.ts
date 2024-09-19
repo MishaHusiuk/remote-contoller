@@ -1,14 +1,16 @@
 import express, { Express } from "express";
-import swaggerUI from "swagger-ui-express";
+import * as swaggerUI from "swagger-ui-express";
 import { WebSocketServer, WebSocket } from "ws";
-import initRoutes from "./routes";
+import router from "./router";
 import swaggerSpec from "./swagger";
+import path from "path";
 
 const app: Express = express();
-const port = 3000;
+const port = 3001;
 
-initRoutes(app);
+app.use(express.static(path.join(__dirname, '../../remote-web-client/build')));
 
+app.use('/api', router);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.listen(port, () => {
