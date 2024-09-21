@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from "express";
+import { getInstance } from "../websocket-server";
 
 const router = express.Router();
   
@@ -20,8 +21,8 @@ router.get("/", (req: Request, res: Response) => {
   * @swagger
   * /command:
   *   post:
-  *     summary: Send a command to a computer
-  *     description: Send command to a computer under currently open connection.
+  *     summary: Send a command the connected websocket client (PC)
+  *     description: Send command to a client(PC) under currently open connection.
   *     requestBody:
   *       required: true
   *       content:
@@ -29,14 +30,27 @@ router.get("/", (req: Request, res: Response) => {
   *           schema:
   *             type: object
   *             properties:
-  *               :
+  *               commandName:
   *                 type: string
   *     responses: 
-  *       '201':
-  *         description: Created
+  *       '200':
+  *         description: Ok
   */
 router.post("/command", (req: Request, res: Response) => {
-  res.send("command received");
+  const { commandName } = req.body;
+
+  sendToWSClient(commandName)
+
+  res.sendStatus(200);
 });
+
+function sendToWSClient(message: string) {
+  const wss = getInstance();
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(message);
+    }
+  });
+};
 
 export default router;

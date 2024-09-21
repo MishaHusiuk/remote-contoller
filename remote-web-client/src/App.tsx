@@ -4,8 +4,11 @@ const handleClick = () => {
   fetch('/api/command', { 
     method: 'POST', 
     body: JSON.stringify({
-      command: 'ESC'
-    })
+      commandName: 'ESC'
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })
 }
 
