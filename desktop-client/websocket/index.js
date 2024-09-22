@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-var robot = require("robotjs");
+const { handleCommand } = require('../handlers');
 
 function initWebSocket(win) {
     const ws = new WebSocket('ws://localhost:8080');
@@ -12,7 +12,7 @@ function initWebSocket(win) {
 
     ws.on('message', (message) => {
         win.webContents.send('command', message.toString());
-        robot.keyTap("escape");
+        handleCommand(message.toString());
 
         console.log(`Received message from server: ${message}`);
     });
