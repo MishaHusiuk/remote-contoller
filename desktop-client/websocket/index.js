@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 const { handleCommand } = require('../handlers');
 
-function initWebSocket(win) {
+function initWebSocket(/*win*/) {
     const ws = new WebSocket('ws://localhost:8080');
 
     ws.on('open', () => {
@@ -11,7 +11,7 @@ function initWebSocket(win) {
     });
 
     ws.on('message', (message) => {
-        win.webContents.send('command', message.toString());
+        // win.webContents.send('command', message.toString());
         handleCommand(message.toString());
 
         console.log(`Received message from server: ${message}`);

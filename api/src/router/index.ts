@@ -1,8 +1,18 @@
 import express, { Express, Request, Response } from "express";
 import { getInstance } from "../websocket-server";
+import { auth, requiredScopes } from 'express-oauth2-jwt-bearer';
 
 const router = express.Router();
-  
+
+// Authorization middleware. When used, the Access Token must
+// exist and be verified against the Auth0 JSON Web Key Set.
+const checkJwt = auth({
+  audience: 'https://remotectr.com/api',
+  issuerBaseURL: `https://dev-63sgbr70.us.auth0.com/`,
+});
+const checkScopes = requiredScopes('send:command');
+
+
 /**
 * @swagger
 * /:
@@ -14,7 +24,7 @@ const router = express.Router();
 //   res.send("Express + TypeScript Server");
 // });
 router.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
+  res.send("Ok");
 });
 
 /**
@@ -36,13 +46,13 @@ router.get("/", (req: Request, res: Response) => {
   *       '200':
   *         description: Ok
   */
-router.post("/command", (req: Request, res: Response) => {
+router.post("/command", [checkJwt, checkScopes, (req: Request, res: Response) => {
   const { commandName } = req.body;
 
   sendToWSClient(commandName)
 
   res.sendStatus(200);
-});
+}]);
 
 function sendToWSClient(message: string) {
   const wss = getInstance();
