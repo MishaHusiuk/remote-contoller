@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Tray, Menu } = require('electron');
 const path = require('path');
 const { createLogoutWindow } = require('./auth-logout-process'); 
+const { createAppWindow: createConnectionSetupWindow } = require('./connection-setup/process');
 
 const createAppWindow = () => {
     let isQuiting;
@@ -30,14 +31,12 @@ const createAppWindow = () => {
     
         tray.setContextMenu(Menu.buildFromTemplate([
             {
-                label: 'Show app',
-                click: () => window.show()
+                label: 'Connect',
+                click: () => createConnectionSetupWindow()
             },
             {
                 label: 'Logout',
-                click: () => {
-                    createLogoutWindow();
-                }
+                click: () => createLogoutWindow()
             },
             {
                 label: 'Quit',

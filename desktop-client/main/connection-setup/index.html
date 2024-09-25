@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <img src="" id="qr" height="100%"/>
+    <script>
+        window.bridge.sendQRImage((event, imageURL) => {
+            const img = document.getElementById('qr')
+            img.src = imageURL
+        });
+    </script>
+  </body>
+</html>

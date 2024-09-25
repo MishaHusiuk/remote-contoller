@@ -4,10 +4,13 @@ const { createAuthWindow } = require('./main/auth-process');
 const createAppWindow = require('./main/app-process');
 const authService = require('./services/auth-service');
 const { initWebSocket } = require('./websocket');
+const envVariables = require('./env-variables.json');
 
 async function showWindow() {
   try {
-    await authService.refreshTokens();
+    if (!envVariables.devSkipAuth) {
+        await authService.refreshTokens();
+    }
     createAppWindow();
     initWebSocket();
   } catch (err) {
