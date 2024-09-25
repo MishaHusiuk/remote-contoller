@@ -1,21 +1,18 @@
-const QRCode = require('qrcode');
+const axios = require('axios');
 const envVariables = require('../env-variables.json');
+const { getAccessToken } = require('./auth-service');
+const generateQrCode = require('../utils/generateQrCode');
 
 
 async function initiateConnection() {
-    var opts = {
-        errorCorrectionLevel: 'H',
-        type: 'image/jpeg',
-        quality: 0.3,
-        margin: 1
-    }
-    const data = envVariables.webAppUrl;
-    return new Promise((res, rej) => {
-        QRCode.toDataURL(data, opts, function (err, url) {
-            if (err) throw rej(err)
-            res(url);
-        })
-    });
+    const response = await axios({
+        method: 'POST',
+        url: `${envVariables.apiUrl}/connection`,
+        headers: { 'Authorization': `Bearer ${getAccessToken()}` }
+    })
+    const connection = response.data;
+    const data = `${envVariables.webAppUrl}/${connection.id}`;
+    return generateQrCode(data);
 }
 
 module.exports = {

@@ -1,7 +1,7 @@
 const { jwtDecode } = require('jwt-decode');
 const axios = require('axios');
 const url = require('url');
-const envVariables = require('../env-variables');
+const envVariables = require('../env-variables.json');
 const keytar = require('keytar');
 const os = require('os');
 
@@ -29,7 +29,8 @@ function getAuthenticationURL() {
         "https://" +
         auth0Domain +
         "/authorize?" +
-        "scope=openid profile offline_access&" +
+        'audience=' + apiIdentifier + '&' +
+        "scope=openid profile offline_access send:command&" +
         "response_type=code&" +
         "client_id=" +
         clientId +

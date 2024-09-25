@@ -1,9 +1,13 @@
 import express, { Express, Request, Response } from "express";
 import { getInstance } from "../websocket-server";
 import { auth, requiredScopes } from 'express-oauth2-jwt-bearer';
+import { startConnection } from "../services/connection";
 
 const router = express.Router();
 
+type JWTPayload = {
+  sub: string;
+}
 // Authorization middleware. When used, the Access Token must
 // exist and be verified against the Auth0 JSON Web Key Set.
 const checkJwt = auth({
@@ -52,6 +56,14 @@ router.post("/command", [checkJwt, checkScopes, (req: Request, res: Response) =>
   sendToWSClient(commandName)
 
   res.sendStatus(200);
+}]);
+
+router.post('/connection', [checkJwt, checkScopes, (req: Request, res: Response) => {
+  const { sub: userId } = req.auth?.payload as JWTPayload;
+
+  const connection = startConnection(userId);
+
+  res.status(201).send(connection);
 }]);
 
 function sendToWSClient(message: string) {
