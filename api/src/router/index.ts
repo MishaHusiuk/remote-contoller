@@ -60,8 +60,9 @@ router.post("/command", [checkJwt, checkScopes, (req: Request, res: Response) =>
 
 router.post('/connection', [checkJwt, checkScopes, (req: Request, res: Response) => {
   const { sub: userId } = req.auth?.payload as JWTPayload;
+  const { controlledDesktopName } = req.body;
 
-  const connection = startConnection(userId);
+  const connection = startConnection(userId, controlledDesktopName);
 
   res.status(201).send(connection);
 }]);

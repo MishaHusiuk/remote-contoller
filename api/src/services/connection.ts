@@ -3,12 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 type Connection = {
     id: string;
     userId: string;
-    status: 'initiating' | 'active'
+    status: 'initiating' | 'active',
+    controlledDesktopName: string;
 };
 
 const activeConnections: Record<string, Connection> = {};
 
-export function startConnection(userId: string) {
+export function startConnection(userId: string, controlledDesktopName: string) {
     if(!!activeConnections[userId]) {
     //    throw new Error('Not implemented');
         return activeConnections[userId];
@@ -16,7 +17,8 @@ export function startConnection(userId: string) {
     activeConnections[userId] = {
         id: uuidv4(),
         userId: userId,
-        status: 'initiating'
+        status: 'initiating',
+        controlledDesktopName
     };
 
     return activeConnections[userId];
