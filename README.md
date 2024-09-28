@@ -10,7 +10,8 @@ Tracks:
 - User authentication / Connect to a device
     - Adding QR code to the electron app - done
     - Adding login forms both electron app, and client app - done
-    - Adding database to manage users' sessions
+    - Adding database to manage users' sessions (memory storage) - done
+    - Establish websocket connection only by validating the connection id
 - Mouse support 
     - UI:
         - drag-n-drop area
@@ -22,7 +23,7 @@ Tracks:
         - manage directions?
         - throttle/debounce/start-stop events
 - Production-ready
-    - buy domain
+    - buy a domain - done
     - build electron app for 2 platforms: MacOS and Windows
     - test electron app on Windows
     - host application in the cloud
