@@ -44,7 +44,7 @@ function App() {
         <LogoutButton />
         <Profile />
       </div>
-      <BasicControlsPage />
+      <BasicControlsPage connectionId={connectionId}/>
     </>
   );
 }

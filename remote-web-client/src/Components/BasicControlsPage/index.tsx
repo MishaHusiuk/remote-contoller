@@ -1,10 +1,14 @@
 import useAccessToken from "../../Auth/useAccessToken";
 import { Command } from "../../types";
 
-function BasicControlsPage() {
+type BasicControlsPageProps = {
+    connectionId: string;
+}
+
+function BasicControlsPage({ connectionId }: BasicControlsPageProps) {
     const accessToken = useAccessToken();
     const handleClick = async (command: Command) => {
-        fetch('/api/command', {
+        fetch(`/api/connections/${connectionId}/commands`, {
             method: 'POST',
             body: JSON.stringify({
                 commandName: command

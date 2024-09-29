@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-type Connection = {
+export type Connection = {
     id: string;
     userId: string;
     status: 'initiating' | 'accepted' | 'active' | 'terminated',
@@ -24,7 +24,7 @@ function startConnection(userId: string, controlledDesktopName: string) {
     return connections[userId];
 }
 
-function getConnection(id: string) {
+function getConnection(id: string): Connection | null {
     console.log(connections);
     const userId = Object.keys(connections).find((userId) => connections[userId].id === id);
     if(!userId) return null;

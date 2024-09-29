@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { getInstance } from "../websocket-server";
-import { startConnection, getConnection, updateConnectionStatus } from "../services/connection";
+import { startConnection, getConnection, updateConnectionStatus, Connection } from "../services/connection";
 import { checkJwt, checkScopes } from "../auth";
 import { JwtPayload } from "jsonwebtoken";
 
@@ -39,10 +39,21 @@ router.get("/", (req: Request, res: Response) => {
   *       '200':
   *         description: Ok
   */
-router.post("/command", [checkJwt, checkScopes, (req: Request, res: Response) => {
+router.post("/connections/:connectionId/commands", [checkJwt, checkScopes, (req: Request, res: Response) => {
   const { commandName } = req.body;
+  const { connectionId } = req.params;
 
-  sendToWSClient(commandName)
+  const connection = getConnection(connectionId);
+  if(!connection) {
+    res.sendStatus(404);
+    return;
+  }
+  if(connection.status !== 'active') {
+    res.status(400).send({ error: 'Cannot send commands via non active connection'});
+    return;
+  }
+
+  sendToWSClient(connection, commandName);
 
   res.sendStatus(200);
 }]);
@@ -151,9 +162,11 @@ router.get('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Respo
   const connection = getConnection(id);
   if(!connection) {
     res.sendStatus(404);
+    return;
   }
   if(connection?.userId !== userId) {
     res.sendStatus(403);
+    return;
   }
 
   res.status(200).send(connection);
@@ -235,9 +248,10 @@ router.patch('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Res
   res.status(200).send(updatedConnection);
 }]);
 
-function sendToWSClient(message: string) {
+function sendToWSClient(connection: Connection, message: string) {
   const wss = getInstance();
-  wss.emit('message', message);
+  wss.to(connection.id).emit('message', message);
+  // wss.emit('message', message);
 };
 
 export default router;

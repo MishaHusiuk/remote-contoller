@@ -1,6 +1,7 @@
 import http from 'http';
 import { Server, Socket } from 'socket.io';
-import { authenticateSocket } from './auth';
+import { authenticateSocket, validateConnection } from './auth';
+import { updateConnectionStatus } from './services/connection';
 
 let ws_namespace: any;
 const WS_BASE_URL = '/ws';
@@ -25,15 +26,22 @@ function initWSS(server: http.Server) {
     // Use the authentication middleware for Socket.IO
     ws_namespace.use(authenticateSocket);
 
+    // Then use the connectionId validation middleware
+    ws_namespace.use(validateConnection);
+
     // Listen for connections
-    ws_namespace.on('connection', (socket: Socket) => {
+    ws_namespace.on('connection', async (socket: Socket) => {
+        const connectionId = socket.data.connectionId;
+        await updateConnectionStatus(connectionId, 'active');
+        socket.join(connectionId);
+
         socket.on('message', (data) => {
             console.log('Message from client:', data);
             console.log('user: ', socket.handshake.auth.decoded.sub);
         });
 
         // Send messages back to the client
-        socket.emit('message', { msg: 'Welcome!' });
+        ws_namespace.to(connectionId).emit('message', { msg: 'Welcome!' });
 
         // Handle disconnection
         socket.on('disconnect', () => {

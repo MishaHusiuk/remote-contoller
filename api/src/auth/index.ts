@@ -2,6 +2,7 @@ import { auth, requiredScopes } from "express-oauth2-jwt-bearer";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import JwksRsa from "jwks-rsa";
 import { Socket } from "socket.io";
+import { getConnection } from "../services/connection";
 
 // Your Auth0 configuration
 const AUTH0_DOMAIN = 'dev-63sgbr70.us.auth0.com'; // e.g., 'your-app.auth0.com'
@@ -55,5 +56,34 @@ export const authenticateSocket = (socket: Socket, next: (err?: Error) => void) 
     });
   } else {
     next(new Error('Authentication error')); // No token provided
+  }
+};
+
+// Middleware to validate connectionId
+export const validateConnection = async (socket: Socket, next: (err?: Error) => void) => {
+  const connectionId = socket.handshake.auth.connectionId;
+  const userId = socket.handshake.auth.decoded.sub;
+
+  if (!connectionId) {
+    return next(new Error('Validation error: Missing connectionId in the request'));
+  }
+
+  try {
+    // Check the connection status based on connectionId
+    const connection = getConnection(connectionId);
+    if (!connection) return next(new Error('Validation error: Connection not found'));
+
+    if (!['accepted', 'active'].includes(connection?.status)) {
+      return next(new Error('Validation error: Connection is not ready'));
+    }
+    
+    if(connection.userId !== userId) {
+      return next(new Error('Validation error: Connection does not belong to this user'));
+    }
+    // Attach connectionId to socket data
+    socket.data.connectionId = connectionId;
+    next(); // Proceed with connection
+  } catch (err) {
+    return next(new Error('Validation error: Unable to validate connectionId'));
   }
 };

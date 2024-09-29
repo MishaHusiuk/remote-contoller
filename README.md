@@ -37,3 +37,10 @@ Bugs
 - Connect window should be opened near tray
 - Connect window can be opened multiple times
 - There should be no maximize button on connect window
+- When non-google user's token is validated, the following error occurs: 
+```
+InvalidTokenError: Invalid Compact JWS
+    at /Users/mishahuziuk/projects/remote-contoller/api/node_modules/express-oauth2-jwt-bearer/dist/index.js:300:19
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async /Users/mishahuziuk/projects/remote-contoller/api/node_modules/express-oauth2-jwt-bearer/dist/index.js:403:24
+```
