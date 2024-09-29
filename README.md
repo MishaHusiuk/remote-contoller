@@ -12,16 +12,6 @@ Tracks:
     - Adding database to manage users' sessions (memory storage) - done
     - Establish websocket connection only by validating the connection id - done
     - Electron app to poll connection status to initiate websocket request after client acceps request - done
-- Mouse support
-    - UI:
-        - drag-n-drop area
-        - central conrol is auto-centered
-        - cental control clicks
-            - double clicked for left click
-            - long clicked for right click
-    - logic
-        - manage directions?
-        - throttle/debounce/start-stop events
 - Production-ready
     - buy a domain - done
 
@@ -35,6 +25,7 @@ Tracks:
     - Show disconnect button when connection is established instead of Connect - done
     - UI display what is the name of currently connected computer
     - When electron app gets closed, client app should be notified of connection closed
+    - Web app: show currently logged-in user, and log-out button
 Bugs
 - Connect window can be opened multiple times - done
 - Close connection window when connection is established - done
@@ -59,3 +50,23 @@ TechDept:
 - Support .env in electron app
 - Store connections in database/redis cache
 - Reorganise folders in electron app for managing screens
+
+High-risk areas:
+- Test app on windows
+- Publishing desktop app
+- Deployment: make sure auth0 integration work fine
+- Deployement: make sure websockets work fine
+- Changing the design of WEB app
+- Desktop application motonitoring
+
+
+- Mouse support - deprioritized
+    - UI:
+        - drag-n-drop area
+        - central conrol is auto-centered
+        - cental control clicks
+            - double clicked for left click
+            - long clicked for right click
+    - logic
+        - manage directions?
+        - throttle/debounce/start-stop events
