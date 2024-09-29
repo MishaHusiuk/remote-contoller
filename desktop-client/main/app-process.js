@@ -2,11 +2,12 @@ const { app, BrowserWindow, Tray, Menu } = require('electron');
 const path = require('path');
 const { createLogoutWindow } = require('./auth-logout-process'); 
 const { createAppWindow: createConnectionSetupWindow } = require('./connection-setup/process');
+const { getActiveConnection } = require('../services/connection-service');
 
+let isQuiting;
+let tray;
+let window;
 const createAppWindow = () => {
-    let isQuiting;
-    let tray;
-    let window;
 
     // const icon = nativeImage.createFromPath(path.resolve(__dirname, 'images/main-icon/remote.png'));
     const win = new BrowserWindow({
@@ -24,28 +25,16 @@ const createAppWindow = () => {
 
     app.whenReady().then(() => {
         app.on('activate', () => {
+            console.log('activated');
             if (BrowserWindow.getAllWindows().length === 0) createAppWindow();
         })
     
         tray = new Tray(path.resolve(__dirname, '../images/RemoteTemplate@2x.png'));
-    
-        tray.setContextMenu(Menu.buildFromTemplate([
-            {
-                label: 'Connect',
-                click: () => createConnectionSetupWindow()
-            },
-            {
-                label: 'Logout',
-                click: () => createLogoutWindow()
-            },
-            {
-                label: 'Quit',
-                click: () => {
-                    isQuiting = true;
-                    app.quit();
-                }
-            }
-        ]));
+        tray.on('click', updateTrayMenu);
+        tray.on('right-click', updateTrayMenu);
+      
+        // Initial tray menu setup
+        updateTrayMenu();
     
         window.on('close', (event) => {
             if (!isQuiting) {
@@ -64,5 +53,32 @@ const createAppWindow = () => {
         isQuiting = true;
     });
 };
+
+function updateTrayMenu() {
+    const activeConnection = getActiveConnection();
+    const menuOptions = Menu.buildFromTemplate([
+        !activeConnection 
+        ? {
+            label: 'Connect',
+            click: () => createConnectionSetupWindow()
+        }
+        : {
+            label: 'Disconnect',
+            click: () => alert('disconnect')
+        },
+        {
+            label: 'Logout',
+            click: () => createLogoutWindow()
+        },
+        {
+            label: 'Quit',
+            click: () => {
+                isQuiting = true;
+                app.quit();
+            }
+        }
+    ])
+    tray.setContextMenu(menuOptions);
+}
 
 module.exports = createAppWindow;

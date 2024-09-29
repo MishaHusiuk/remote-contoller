@@ -48,6 +48,7 @@ async function pollConnectionStatus(connectionId, closeConnectionWindow) {
     if (status === 'accepted') {
       // Connection is accepted, initiate WebSocket connection
       initWebSocket(connectionId, accessToken);
+      setActiveConnection(response.data);
       closeConnectionWindow();
     } else {
       // Continue polling if status is not accepted
@@ -66,9 +67,19 @@ function stopPollConnectionStatus() {
   pollingTimer = null;
 };
 
+let currentActiveConnection = null;
+function getActiveConnection() {
+  return currentActiveConnection;
+}
+function setActiveConnection(connection) {
+  currentActiveConnection = connection;
+}
+
 module.exports = {
     initiateConnection,
     getConnectionQRCode,
     pollConnectionStatus,
-    stopPollConnectionStatus
+    stopPollConnectionStatus,
+    getActiveConnection,
+    setActiveConnection
 };
