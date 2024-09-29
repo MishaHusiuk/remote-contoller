@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import { getInstance } from "../websocket-server";
 import { auth, requiredScopes } from 'express-oauth2-jwt-bearer';
-import { startConnection } from "../services/connection";
+import { startConnection, getConnection } from "../services/connection";
 
 const router = express.Router();
 
@@ -33,7 +33,7 @@ router.get("/", (req: Request, res: Response) => {
 
 /**
   * @swagger
-  * /command:
+  * /api/command:
   *   post:
   *     summary: Send a command the connected websocket client (PC)
   *     description: Send command to a client(PC) under currently open connection.
@@ -58,13 +58,114 @@ router.post("/command", [checkJwt, checkScopes, (req: Request, res: Response) =>
   res.sendStatus(200);
 }]);
 
-router.post('/connection', [checkJwt, checkScopes, (req: Request, res: Response) => {
+/**
+* @swagger
+* /api/connections:
+*   post:
+*     summary: Create a connection
+*     description: Creates a new connection resource and returns its ID and related information.
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             required:
+*               - controlledDesktopName
+*             properties:
+*               controlledDesktopName:
+*                 type: string
+*     responses:
+*       '201':
+*         description: Connection created successfully
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 id:
+*                   type: string
+*                   format: uuid
+*                 userId:
+*                   type: string
+*                 status:
+*                   type: string
+*                   enum: ['initiating', 'accepted', 'active', 'terminated']
+*                 controlledDesktopName:
+*                   type: string
+*       '400':
+*         description: Invalid request body or missing required fields
+*       '401':
+*         description: Unauthorized, missing or invalid access token
+*       '500':
+*         description: Internal server error
+*     security:
+*       - bearerAuth: []
+*/
+router.post('/connections', [checkJwt, checkScopes, (req: Request, res: Response) => {
   const { sub: userId } = req.auth?.payload as JWTPayload;
   const { controlledDesktopName } = req.body;
 
   const connection = startConnection(userId, controlledDesktopName);
 
   res.status(201).send(connection);
+}]);
+
+/**
+* @swagger
+* /api/connections/{id}:
+*   get:
+*     summary: Get connection details
+*     description: Retrieves details of a specific connection by its ID.
+*     parameters:
+*       - in: path
+*         name: id
+*         required: true
+*         schema:
+*           type: string
+*         description: The ID of the connection
+*     responses:
+*       '200':
+*         description: Connection details retrieved successfully
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 id:
+*                   type: string
+*                   format: uuid
+*                 userId:
+*                   type: string
+*                 status:
+*                   type: string
+*                   enum: ['initiating', 'accepted', 'active', 'terminated']
+*                 controlledDesktopName:
+*                   type: string
+*       '401':
+*         description: Unauthorized, missing or invalid access token
+*       '403':
+*         description: Forbidden, user does not have permission to access this connection
+*       '404':
+*         description: Connection not found
+*       '500':
+*         description: Internal server error
+*     security:
+*       - bearerAuth: []
+*/
+router.get('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Response) => {
+  const { sub: userId } = req.auth?.payload as JWTPayload;
+  const { id } = req.params;
+
+  const connection = getConnection(id);
+  if(!connection) {
+    res.sendStatus(404);
+  }
+  if(connection?.userId !== userId) {
+    res.sendStatus(403);
+  }
+
+  res.status(200).send(connection);
 }]);
 
 function sendToWSClient(message: string) {

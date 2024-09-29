@@ -1,9 +1,17 @@
 const { BrowserWindow } = require('electron');
 const path = require('path');
-const { initiateConnection } = require('../../services/connection-service'); 
+const { 
+    initiateConnection, 
+    getConnectionQRCode,
+    pollConnectionStatus,
+    stopPollConnectionStatus
+} = require('../../services/connection-service');
 
 async function createAppWindow() {
-    const qrImage = await initiateConnection();
+    const connection = await initiateConnection();
+    const qrImage = await getConnectionQRCode(connection);
+    await pollConnectionStatus(connection.id);
+
     let window = new BrowserWindow({
         width: 270,
         height: 300,
@@ -15,8 +23,9 @@ async function createAppWindow() {
     await window.loadFile(path.resolve(__dirname, 'index.html'));
     window.webContents.send('sendQRImage', qrImage); 
 
-    window.on('closed', () => {
+    window.on('close', () => {
         window = null;
+        stopPollConnectionStatus();
     });
 }
 
