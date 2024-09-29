@@ -7,12 +7,13 @@ const {
     stopPollConnectionStatus
 } = require('../../services/connection-service');
 
+let window = null;
 async function createAppWindow() {
+    destroyWindow();
     const connection = await initiateConnection();
     const qrImage = await getConnectionQRCode(connection);
-    await pollConnectionStatus(connection.id);
 
-    let window = new BrowserWindow({
+    window = new BrowserWindow({
         width: 270,
         height: 300,
         webPreferences: {
@@ -27,6 +28,14 @@ async function createAppWindow() {
         window = null;
         stopPollConnectionStatus();
     });
+
+    await pollConnectionStatus(connection.id, destroyWindow);
+}
+
+function destroyWindow() {
+    if (!window) return;
+    window.close();
+    window = null;
 }
 
 module.exports = { createAppWindow };

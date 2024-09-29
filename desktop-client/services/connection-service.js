@@ -28,11 +28,11 @@ async function getConnectionQRCode (connection) {
 
 let pollingTimer = null;
 // Polling function to check the status of the connection
-async function pollConnectionStatus(connectionId) {
+async function pollConnectionStatus(connectionId, closeConnectionWindow) {
   // Skip the first poll
   // give user 5 seconds to scan the code, then start normal 3 seconds polling
   if (pollingTimer === null) {
-    pollingTimer = setTimeout(() => pollConnectionStatus(connectionId), 5 * 1000);
+    pollingTimer = setTimeout(() => pollConnectionStatus(connectionId, closeConnectionWindow), 5 * 1000);
   }
 
   const accessToken = getAccessToken();
@@ -48,12 +48,13 @@ async function pollConnectionStatus(connectionId) {
     if (status === 'accepted') {
       // Connection is accepted, initiate WebSocket connection
       initWebSocket(connectionId, accessToken);
+      closeConnectionWindow();
     } else {
       // Continue polling if status is not accepted
       if(pollingTimer) {
         stopPollConnectionStatus();
       }
-      pollingTimer = setTimeout(() => pollConnectionStatus(connectionId), 3 * 1000); // Poll every 3 seconds
+      pollingTimer = setTimeout(() => pollConnectionStatus(connectionId, closeConnectionWindow), 3 * 1000); // Poll every 3 seconds
     }
   } catch (error) {
     console.error('Error polling connection status:', error);

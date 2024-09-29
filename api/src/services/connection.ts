@@ -25,7 +25,6 @@ function startConnection(userId: string, controlledDesktopName: string) {
 }
 
 function getConnection(id: string): Connection | null {
-    console.log(connections);
     const userId = Object.keys(connections).find((userId) => connections[userId].id === id);
     if(!userId) return null;
 

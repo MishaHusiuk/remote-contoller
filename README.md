@@ -33,6 +33,8 @@ Tracks:
     - upload electron app to s3 and make a web page for downloading it
     - record number of downloads
     - Translations
+- Misc
+    - UI display what is the name of currently connected computer
 
 Bugs
 - Desktop app: login -> log out -> log in -> new app icon in the tray is added
@@ -41,6 +43,9 @@ Bugs
 - Connect window can be opened multiple times
 - There should be no maximize button on connect window
 - When non-google user's token is validated, the following error occurs: 
+- Close connection window when connection is established - done
+- UI: buttons height and width
+
 ```
 InvalidTokenError: Invalid Compact JWS
     at /Users/mishahuziuk/projects/remote-contoller/api/node_modules/express-oauth2-jwt-bearer/dist/index.js:300:19
@@ -52,4 +57,5 @@ TechDept:
 - Convert electron app to typescript and ES modules
 - Support .env in api
 - Support .env in electron app
-- 
+- Store connections in database/redis cache
+- Reorganise folders in electron app for managing screens
