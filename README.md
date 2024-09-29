@@ -11,7 +11,9 @@ Tracks:
     - Adding QR code to the electron app - done
     - Adding login forms both electron app, and client app - done
     - Adding database to manage users' sessions (memory storage) - done
-    - Establish websocket connection only by validating the connection id
+    - Establish websocket connection only by validating the connection id - done
+    - Electron app to poll connection status to initiate websocket request after client acceps request - in progress
+    - Disconnect button in electron 
 - Mouse support 
     - UI:
         - drag-n-drop area
@@ -44,3 +46,9 @@ InvalidTokenError: Invalid Compact JWS
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
     at async /Users/mishahuziuk/projects/remote-contoller/api/node_modules/express-oauth2-jwt-bearer/dist/index.js:403:24
 ```
+
+TechDept:
+- Convert electron app to typescript and ES modules
+- Support .env in api
+- Support .env in electron app
+- 
