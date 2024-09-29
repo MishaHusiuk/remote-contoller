@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import { getInstance } from "../websocket-server";
 import { auth, requiredScopes } from 'express-oauth2-jwt-bearer';
-import { startConnection, getConnection } from "../services/connection";
+import { startConnection, getConnection, updateConnectionStatus } from "../services/connection";
 
 const router = express.Router();
 
@@ -108,6 +108,8 @@ router.post('/connections', [checkJwt, checkScopes, (req: Request, res: Response
 
   const connection = startConnection(userId, controlledDesktopName);
 
+  console.log(connection);
+
   res.status(201).send(connection);
 }]);
 
@@ -166,6 +168,82 @@ router.get('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Respo
   }
 
   res.status(200).send(connection);
+}]);
+
+/**
+* @swagger
+* /api/connections/{id}:
+*   patch:
+*     summary: Update the status of a connection
+*     description: Updates the status of a connection to one of 'accepted', 'active', or 'terminated'.
+*     parameters:
+*       - in: path
+*         name: id
+*         required: true
+*         description: The ID of the connection to update
+*         schema:
+*           type: string
+*           format: uuid
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             properties:
+*               status:
+*                 type: string
+*                 enum: ['accepted', 'active', 'terminated']
+*             example:
+*               status: 'accepted'
+*     responses:
+*       200:
+*         description: Successfully updated the connection status
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 id:
+*                   type: string
+*                   format: uuid
+*                 userId:
+*                   type: string
+*                   format: uuid
+*                 status:
+*                   type: string
+*                   enum: ['accepted', 'active', 'terminated']
+*                 controlledDesktopName:
+*                   type: string
+*       401:
+*         description: Unauthorized - Missing or invalid authentication token
+*       403:
+*         description: Forbidden - User is not allowed to update this connection
+*       404:
+*         description: Not Found - Connection with the specified ID does not exist
+*       500:
+*         description: Internal server error
+*     security:
+*       - bearerAuth: []
+*     tags:
+*       - Connections
+*/
+router.patch('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Response) => {
+  const { sub: userId } = req.auth?.payload as JWTPayload;
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const connection = getConnection(id);
+  if(!connection) {
+    res.sendStatus(404);
+  }
+  if(connection?.userId !== userId) {
+    res.sendStatus(403);
+  }
+  
+  const updatedConnection = updateConnectionStatus(id, status);
+
+  res.status(200).send(updatedConnection);
 }]);
 
 function sendToWSClient(message: string) {

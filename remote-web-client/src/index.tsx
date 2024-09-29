@@ -5,9 +5,41 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
 import config from './env-config';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
 const { AUTH0_DOMAIN, AUTH0_CLIENTID, AUTH0_AUDIENCE, AUTH0_SCOPE } = config;
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <div>Hello world!</div>,
+  },
+  {
+    path: "/connection",
+    element: (
+      <Auth0Provider
+        domain={AUTH0_DOMAIN}
+        clientId={AUTH0_CLIENTID}
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+          audience: AUTH0_AUDIENCE,
+          scope: AUTH0_SCOPE
+        }}
+      >
+        <App />
+      </Auth0Provider>
+    ),
+  },
+  {
+    path: '/connection-acceptance-error',
+    element: (
+      <div>Не можливо активувати поточну сесію. Ініціалізуйте нову сесію.</div>
+    )
+  }
+]);
 // degugging purposes only
 window.addEventListener("keydown", (event) => alert(event.code));
 
@@ -16,17 +48,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Auth0Provider
-      domain={AUTH0_DOMAIN}
-      clientId={AUTH0_CLIENTID}
-      authorizationParams={{
-        redirect_uri: window.location.origin,
-        audience: AUTH0_AUDIENCE,
-        scope: AUTH0_SCOPE
-      }}
-    >
-      <App />
-    </Auth0Provider>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

@@ -25,13 +25,27 @@ function startConnection(userId: string, controlledDesktopName: string) {
 }
 
 function getConnection(id: string) {
+    console.log(connections);
     const userId = Object.keys(connections).find((userId) => connections[userId].id === id);
     if(!userId) return null;
 
     return connections[userId];
 };
 
+function updateConnectionStatus(id: string, newStatus: 'accepted' | 'active' | 'terminated') {
+    const userId = Object.keys(connections).find((userId) => connections[userId].id === id);
+    if(!userId) return null;
+
+    const connection = connections[userId];
+    
+    connection.status = newStatus;
+
+    return connection;
+};
+
+
 export {
     startConnection,
-    getConnection
+    getConnection,
+    updateConnectionStatus
 }

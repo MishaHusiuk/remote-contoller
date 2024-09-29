@@ -1,7 +1,7 @@
 import useAccessToken from "../../Auth/useAccessToken";
 import { Command } from "../../types";
 
-function BasicControls() {
+function BasicControlsPage() {
     const accessToken = useAccessToken();
     const handleClick = async (command: Command) => {
         fetch('/api/command', {
@@ -52,4 +52,4 @@ function BasicControls() {
     );
 }
 
-export default BasicControls;
+export default BasicControlsPage;

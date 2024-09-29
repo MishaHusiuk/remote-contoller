@@ -10,3 +10,10 @@ export enum Command {
     COLUME_UP = 'VOLUME_UP',
     VOLUME_DOWN = 'VOLUME_DOWN'
 }
+
+export type Connection = {
+    id: string;
+    userId: string;
+    status: 'initiating' | 'accepted' | 'active' | 'terminated',
+    controlledDesktopName: string;
+}
