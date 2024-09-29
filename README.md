@@ -12,8 +12,9 @@ Tracks:
     - Adding login forms both electron app, and client app - done
     - Adding database to manage users' sessions (memory storage) - done
     - Establish websocket connection only by validating the connection id - done
-    - Electron app to poll connection status to initiate websocket request after client acceps request - in progress
+    - Electron app to poll connection status to initiate websocket request after client acceps request - done
     - Disconnect button in electron 
+    - When electron app gets closed, client app should be notified of connection closed
 - Mouse support 
     - UI:
         - drag-n-drop area
