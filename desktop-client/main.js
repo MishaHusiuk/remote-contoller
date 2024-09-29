@@ -3,7 +3,6 @@ const { app } = require('electron');
 const { createAuthWindow } = require('./main/auth-process');
 const createAppWindow = require('./main/app-process');
 const authService = require('./services/auth-service');
-const { initWebSocket } = require('./websocket');
 const envVariables = require('./env-variables.json');
 
 async function showWindow() {
@@ -12,7 +11,6 @@ async function showWindow() {
         await authService.refreshTokens();
     }
     createAppWindow();
-    initWebSocket();
   } catch (err) {
     createAuthWindow();
   }

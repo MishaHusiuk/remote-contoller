@@ -3,6 +3,7 @@ const envVariables = require('../env-variables.json');
 const { getAccessToken } = require('./auth-service');
 const generateQrCode = require('../utils/generateQrCode');
 const getComputerName = require('../utils/getComputerName');
+const { initWebSocket } = require('../websocket');
 
 async function initiateConnection() {
     const computerName = getComputerName();
@@ -46,7 +47,7 @@ async function pollConnectionStatus(connectionId) {
 
     if (status === 'accepted') {
       // Connection is accepted, initiate WebSocket connection
-      initiateWebSocket(connectionId, accessToken);
+      initWebSocket(connectionId, accessToken);
     } else {
       // Continue polling if status is not accepted
       if(pollingTimer) {

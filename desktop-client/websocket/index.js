@@ -1,24 +1,33 @@
-const WebSocket = require('ws');
+// const WebSocket = require('ws');
+const io = require('socket.io-client');
 const { handleCommand } = require('../handlers');
+const { wsServerUrl } = require('../env-variables.json');
 
-function initWebSocket(/*win*/) {
-    const ws = new WebSocket('ws://localhost:8080');
-
-    ws.on('open', () => {
-        console.log('Connected to server');
-
-        ws.send('Hello, server!');
+function initWebSocket(connectionId, accessToken) {
+    const socket = io(wsServerUrl, {
+        auth: {
+            token: accessToken,
+            connectionId
+        },
     });
 
-    ws.on('message', (message) => {
-        // win.webContents.send('command', message.toString());
-        handleCommand(message.toString());
-
-        console.log(`Received message from server: ${message}`);
+    socket.on('connect', () => {
+        console.log('Connected to ws server');
+    
+        socket.emit('message', { msg: 'Hello from Electron!' });
     });
-
-    ws.on('close', () => {
-        console.log('Disconnected from server');
+  
+    socket.on('message', (data) => {
+        console.log('Message from server:', data);
+        handleCommand(data.toString());
+    });
+    
+    socket.on('disconnect', () => {
+        console.log('Disconnected from ws server');
+    });
+    
+    socket.on('connect_error', (err) => {
+        console.error('Connection error:', err.message);
     });
 }
 
