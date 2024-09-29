@@ -1,3 +1,4 @@
+import http from 'http';
 import express, { Express } from "express";
 import * as swaggerUI from "swagger-ui-express";
 import router from "./router";
@@ -6,6 +7,7 @@ import path from "path";
 import { initWSS } from "./websocket-server";
 
 const app: Express = express();
+const server = http.createServer(app);
 const port = 3001;
 
 app.use(express.json())
@@ -19,8 +21,11 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../remote-web-client/build', 'index.html'));
 });
 
-app.listen(port, () => {
+app.get('/ws', (_, res) => {
+  res.send('WebSocket connection endpoint. Use a WebSocket client to connect.');
+});
+initWSS(server);
+
+server.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
-
-initWSS();

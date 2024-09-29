@@ -1,31 +1,53 @@
-import { WebSocketServer, WebSocket } from "ws";
+import http from 'http';
+import { Server, Socket } from 'socket.io';
+import { authenticateSocket } from './auth';
 
-let wss: WebSocketServer | null = null;
+let ws_namespace: any;
+const WS_BASE_URL = '/ws';
 
-function initWSS() {
+function initWSS(server: http.Server) {
+    const wss = new Server(server);
 
-    wss = new WebSocket.Server({ port: 8080 });
+    ws_namespace = wss.of(WS_BASE_URL);
+    const verifyServerPath = (socket: Socket, next: (err?: Error) => void) => {
+        const handshake = socket.request;
     
-    wss.on('connection', (ws: WebSocket) => {
-        console.log('New client connected');
-        
-        ws.on('message', (message: string) => {
-            console.log(`Received message: ${message}`);
-            ws.send(`Server received your message: ${message}`);
+        // Check the URL for the specific route
+        if (handshake.headers.referer && handshake.headers.referer.includes(WS_BASE_URL)) {
+            next(); // Proceed with connection if it's the correct route
+        } else {
+            next(new Error('Invalid WebSocket route')); // Reject connection
+        }
+  
+    }
+
+    wss.use(verifyServerPath);
+    // Use the authentication middleware for Socket.IO
+    ws_namespace.use(authenticateSocket);
+
+    // Listen for connections
+    ws_namespace.on('connection', (socket: Socket) => {
+        socket.on('message', (data) => {
+            console.log('Message from client:', data);
+            console.log('user: ', socket.handshake.auth.decoded.sub);
         });
-        
-        ws.on('close', () => {
-            console.log('Client disconnected');
+
+        // Send messages back to the client
+        socket.emit('message', { msg: 'Welcome!' });
+
+        // Handle disconnection
+        socket.on('disconnect', () => {
+            console.log('User disconnected');
         });
     });
 }
 
-function getInstance(): WebSocketServer {
-    if (!wss) throw new Error('WebSocket server has not been initialized yet.');
-    return wss;
+function getInstance(): Server {
+    if (!ws_namespace) throw new Error('WebSocket server has not been initialized yet.');
+    return ws_namespace;
 }
-    
+
 export {
     initWSS,
-    getInstance
+    getInstance,
 };

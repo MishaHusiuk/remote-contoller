@@ -1,21 +1,10 @@
-import express, { Express, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import { getInstance } from "../websocket-server";
-import { auth, requiredScopes } from 'express-oauth2-jwt-bearer';
 import { startConnection, getConnection, updateConnectionStatus } from "../services/connection";
+import { checkJwt, checkScopes } from "../auth";
+import { JwtPayload } from "jsonwebtoken";
 
 const router = express.Router();
-
-type JWTPayload = {
-  sub: string;
-}
-// Authorization middleware. When used, the Access Token must
-// exist and be verified against the Auth0 JSON Web Key Set.
-const checkJwt = auth({
-  audience: 'https://remotectr.com/api',
-  issuerBaseURL: `https://dev-63sgbr70.us.auth0.com/`,
-});
-const checkScopes = requiredScopes('send:command');
-
 
 /**
 * @swagger
@@ -103,7 +92,7 @@ router.post("/command", [checkJwt, checkScopes, (req: Request, res: Response) =>
 *       - bearerAuth: []
 */
 router.post('/connections', [checkJwt, checkScopes, (req: Request, res: Response) => {
-  const { sub: userId } = req.auth?.payload as JWTPayload;
+  const { sub: userId = '' } = req.auth?.payload as JwtPayload;
   const { controlledDesktopName } = req.body;
 
   const connection = startConnection(userId, controlledDesktopName);
@@ -156,7 +145,7 @@ router.post('/connections', [checkJwt, checkScopes, (req: Request, res: Response
 *       - bearerAuth: []
 */
 router.get('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Response) => {
-  const { sub: userId } = req.auth?.payload as JWTPayload;
+  const { sub: userId } = req.auth?.payload as JwtPayload;
   const { id } = req.params;
 
   const connection = getConnection(id);
@@ -229,7 +218,7 @@ router.get('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Respo
 *       - Connections
 */
 router.patch('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Response) => {
-  const { sub: userId } = req.auth?.payload as JWTPayload;
+  const { sub: userId = '' } = req.auth?.payload as JwtPayload;
   const { id } = req.params;
   const { status } = req.body;
 
@@ -248,11 +237,7 @@ router.patch('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Res
 
 function sendToWSClient(message: string) {
   const wss = getInstance();
-  wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(message);
-    }
-  });
+  wss.emit('message', message);
 };
 
 export default router;
