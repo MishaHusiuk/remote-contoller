@@ -20,17 +20,7 @@ const router = createBrowserRouter([
   {
     path: "/connection",
     element: (
-      <Auth0Provider
-        domain={AUTH0_DOMAIN}
-        clientId={AUTH0_CLIENTID}
-        authorizationParams={{
-          redirect_uri: window.location.origin,
-          audience: AUTH0_AUDIENCE,
-          scope: AUTH0_SCOPE
-        }}
-      >
         <App />
-      </Auth0Provider>
     ),
   },
   {
@@ -48,7 +38,17 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Auth0Provider
+        domain={AUTH0_DOMAIN}
+        clientId={AUTH0_CLIENTID}
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+          audience: AUTH0_AUDIENCE,
+          scope: AUTH0_SCOPE
+        }}
+      >
+        <RouterProvider router={router} />
+      </Auth0Provider>
   </React.StrictMode>
 );
 
