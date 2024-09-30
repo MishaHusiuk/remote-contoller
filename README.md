@@ -23,10 +23,11 @@ Tracks:
     - Translations
 - Misc
     - Show disconnect button when connection is established instead of Connect - done
-    - UI display what is the name of currently connected computer
+    - UI display what is the name of currently connected computer - done
+    - Web app show users profile picture and logout button - done
+
     - When electron app gets closed, client app should be notified of connection closed
     - Web app: show currently logged-in user, and log-out button
-    - Web app show users profile picture and logout button - done
 Bugs
 - Connect window can be opened multiple times - done
 - Close connection window when connection is established - done
