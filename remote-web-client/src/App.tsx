@@ -38,14 +38,18 @@ function App() {
   }
 
   return (
-    <>
+    <div className="bg-gray-900 text-white flex flex-col justify-center items-center min-h-screen">
       <div className="flex flex-row justify-between">
         <LoginButton />
         <LogoutButton />
         <Profile />
       </div>
+      <h1 className="text-2xl font-bold mb-6">Керування ПК</h1>
       <BasicControlsPage connectionId={connectionId}/>
-    </>
+      <footer className="text-gray-400 mt-8 text-sm">
+          Розроблено Гузюком Михайлом
+      </footer>
+    </div>
   );
 }
 
