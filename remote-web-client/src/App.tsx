@@ -1,7 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import LoginButton from "./Components/Login";
-import LogoutButton from "./Components/Logout";
 import Profile from "./Components/Profile";
 import BasicControlsPage from "./Components/BasicControlsPage";
 import useAccessToken from "./Auth/useAccessToken";
@@ -29,7 +27,7 @@ function App() {
   }, [connectionId, acceptConnection, accessToken, isAuthenticated, isLoading, user, navigate]);
 
   if (isLoading) {
-    return <div>Loading...</div>;  // Display a loading indicator while checking the authentication status
+    return <div>Loading...</div>;
   }
 
   if (!isAuthenticated || !user) {
@@ -38,11 +36,9 @@ function App() {
   }
 
   return (
-    <div className="bg-gray-900 text-white flex flex-col justify-center items-center min-h-screen">
-      <div className="flex flex-row justify-between">
-        <LoginButton />
-        <LogoutButton />
-        <Profile />
+    <div className="relative min-h-screen bg-gray-900 p-4 bg-gray-900 text-white flex flex-col justify-center items-center min-h-screen">
+      <div className="absolute top-4 right-4">
+          <Profile />
       </div>
       <h1 className="text-2xl font-bold mb-6">Керування ПК</h1>
       <BasicControlsPage connectionId={connectionId}/>
