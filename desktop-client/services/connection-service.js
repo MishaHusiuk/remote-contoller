@@ -3,7 +3,7 @@ const envVariables = require('../env-variables.json');
 const { getAccessToken } = require('./auth-service');
 const generateQrCode = require('../utils/generateQrCode');
 const getComputerName = require('../utils/getComputerName');
-const { initWebSocket } = require('../websocket');
+const { initWebSocket, disconnect } = require('../websocket');
 
 async function initiateConnection() {
     const computerName = getComputerName();
@@ -75,11 +75,30 @@ function setActiveConnection(connection) {
   currentActiveConnection = connection;
 }
 
+async function terminateConnection() {
+  if(!currentActiveConnection) return;
+  const response = await axios({
+    method: 'PATCH',
+    url: `${envVariables.apiUrl}/connections/${currentActiveConnection.id}`,
+    headers: { 
+        'Authorization': `Bearer ${getAccessToken()}`,
+        'Content-Type': 'application/json'
+    },
+    data: {
+        status: 'terminated'
+    }
+  })
+  console.log('connection terminated: ', response.data);
+  disconnect();
+  setActiveConnection(null);
+}
+
 module.exports = {
     initiateConnection,
     getConnectionQRCode,
     pollConnectionStatus,
     stopPollConnectionStatus,
     getActiveConnection,
-    setActiveConnection
+    setActiveConnection,
+    terminateConnection
 };

@@ -7,36 +7,40 @@ export type Connection = {
     controlledDesktopName: string;
 };
 
-const connections: Record<string, Connection> = {};
+const connections: Array<Connection> = [];
 
 function startConnection(userId: string, controlledDesktopName: string) {
-    if(!!connections[userId]) {
-    //    throw new Error('Not implemented');
-        return connections[userId];
+    const activeConnectionToTheSamePC = connections.find((c) => 
+            c.userId === userId 
+        && c.status === 'active'
+        && c.controlledDesktopName === controlledDesktopName
+    );
+    
+    if(!!activeConnectionToTheSamePC) {
+        return activeConnectionToTheSamePC;
     }
-    connections[userId] = {
+    const newConnection: Connection = {
         id: uuidv4(),
         userId: userId,
         status: 'initiating',
         controlledDesktopName
     };
-
-    return connections[userId];
+    connections.push(newConnection);
+    
+    return newConnection;
 }
 
 function getConnection(id: string): Connection | null {
-    const userId = Object.keys(connections).find((userId) => connections[userId].id === id);
-    if(!userId) return null;
-
-    return connections[userId];
+    const connection = connections.find((c) => c.id === id);
+    if (!connection) return null;
+    
+    return connection;
 };
 
 function updateConnectionStatus(id: string, newStatus: 'accepted' | 'active' | 'terminated') {
-    const userId = Object.keys(connections).find((userId) => connections[userId].id === id);
-    if(!userId) return null;
+    const connection = getConnection(id);
+    if(!connection) return null;
 
-    const connection = connections[userId];
-    
     connection.status = newStatus;
 
     return connection;

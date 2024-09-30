@@ -3,8 +3,9 @@ const io = require('socket.io-client');
 const { handleCommand } = require('../handlers');
 const { wsServerUrl } = require('../env-variables.json');
 
+let socket = null;
 function initWebSocket(connectionId, accessToken) {
-    const socket = io(wsServerUrl, {
+    socket = io(wsServerUrl, {
         auth: {
             token: accessToken,
             connectionId
@@ -31,6 +32,12 @@ function initWebSocket(connectionId, accessToken) {
     });
 }
 
+function disconnect() {
+    if(!socket) return;
+    socket.disconnect();
+}
+
 module.exports = {
-    initWebSocket
+    initWebSocket,
+    disconnect
 }

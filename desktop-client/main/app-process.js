@@ -2,7 +2,7 @@ const { app, BrowserWindow, Tray, Menu } = require('electron');
 const path = require('path');
 const { createLogoutWindow } = require('./auth-logout-process'); 
 const { createAppWindow: createConnectionSetupWindow } = require('./connection-setup/process');
-const { getActiveConnection } = require('../services/connection-service');
+const { getActiveConnection, terminateConnection } = require('../services/connection-service');
 
 let isQuiting;
 let tray;
@@ -64,7 +64,7 @@ function updateTrayMenu() {
         }
         : {
             label: 'Disconnect',
-            click: () => alert('disconnect')
+            click: () => terminateConnection()
         },
         {
             label: 'Logout',
@@ -74,6 +74,7 @@ function updateTrayMenu() {
             label: 'Quit',
             click: () => {
                 isQuiting = true;
+                terminateConnection();
                 app.quit();
             }
         }
