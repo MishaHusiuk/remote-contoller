@@ -26,17 +26,20 @@ Tracks:
     - UI display what is the name of currently connected computer
     - When electron app gets closed, client app should be notified of connection closed
     - Web app: show currently logged-in user, and log-out button
+    - Web app show users profile picture and logout button - done
 Bugs
 - Connect window can be opened multiple times - done
 - Close connection window when connection is established - done
+- UI: buttons height and width - done
+
+- When user is not authenticated, and tries to open connection screen, he is not redirected to the connection screen, but to the root screen
 
 - Desktop app: login -> log out -> log in -> new app icon in the tray is added
 - With authentication app stopped responding in local network
 - Connect window should be opened near tray
 - There should be no maximize button on connect window
+- UI logout process does not work properly
 - When non-google user's token is validated, the following error occurs: 
-- UI: buttons height and width
-
 ```
 InvalidTokenError: Invalid Compact JWS
     at /Users/mishahuziuk/projects/remote-contoller/api/node_modules/express-oauth2-jwt-bearer/dist/index.js:300:19
