@@ -10,6 +10,7 @@ import App from './App';
 import config from './env-config';
 import InvalidConnectionPage from './Components/InvalidConnectionPage';
 import HomePage from './Components/HomePage';
+import PageWrapper from './Components/PageWrapper';
 
 import './styles/index.css';
 
@@ -52,7 +53,9 @@ root.render(
           scope: AUTH0_SCOPE
         }}
       >
-        <RouterProvider router={router} />
+        <PageWrapper>
+          <RouterProvider router={router} />
+        </PageWrapper>
       </Auth0Provider>
   </React.StrictMode>
 );

@@ -3,15 +3,7 @@ import Profile from '../Profile';
 
 function HomePage() {
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
-      {/* Top Section with Profile Menu */}
-      <header className="flex justify-between items-center p-4 border-b border-gray-800">
-        <h1 className="text-3xl font-bold">RemoteCTR</h1>
-        <Profile /> {/* Profile Menu in the top-right corner */}
-      </header>
-
-      {/* Main Section */}
-      <main className="flex-1 flex flex-col items-center justify-center p-8">
+      <div className="flex-1 flex flex-col items-center justify-center p-8">
         <section className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Ласкаво просимо до RemoteCTR</h2>
           <p className="text-lg">Завантажте десктопний клієнт для MacOS або Windows, щоб почати використовувати RemoteCTR.</p>
@@ -67,10 +59,7 @@ function HomePage() {
             </div>
           </div>
         </section>
-      </main>
-
-    <Footer />
-    </div>
+      </div>
   );
 }
 

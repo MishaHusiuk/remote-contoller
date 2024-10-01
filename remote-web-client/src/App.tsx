@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import Profile from "./Components/Profile";
 import BasicControlsPage from "./Components/BasicControlsPage";
 import useAccessToken from "./Auth/useAccessToken";
 import { acceptConnection, getConnection } from "./connection";
 import { Connection } from "./types";
 import ConnectedToDesktop from "./Components/ConnectedToDesktop";
-import Footer from "./Components/Footer";
+import Loading from "./Components/Loading";
 
 function App() {
   const { isAuthenticated, loginWithRedirect, logout, isLoading, user } = useAuth0();
@@ -43,7 +42,7 @@ function App() {
   ]);
 
   if (isLoading || !connection) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!isAuthenticated || !user) {
@@ -52,14 +51,10 @@ function App() {
   }
 
   return (
-    <div className="relative min-h-screen bg-gray-900 p-4 bg-gray-900 text-white flex flex-col justify-center items-center min-h-screen">
-      <div className="absolute top-4 right-4">
-          <Profile />
-      </div>
+    <>
       <ConnectedToDesktop connection={connection} />
       <BasicControlsPage connectionId={connectionId}/>
-      <Footer />
-    </div>
+    </>
   );
 }
 

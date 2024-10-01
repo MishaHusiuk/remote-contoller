@@ -1,13 +1,5 @@
-import Footer from '../Footer';
-import Profile from '../Profile';
-
 const InvalidConnectionPage = () => {
   return (
-    <div className="flex flex-col h-screen bg-gray-900 text-white relative">
-      <div className="absolute top-4 right-4">
-        <Profile />
-      </div>
-
       <div className="flex-1 flex flex-col justify-center items-center">
         {/* SVG for invalid connection */}
         <svg
@@ -27,9 +19,6 @@ const InvalidConnectionPage = () => {
         <h1 className="text-xl font-semibold mb-4">Це підключення не дійсне.</h1>
         <p>Будь ласка ініціалізуйте нове підключення.</p>
       </div>
-
-      <Footer />
-    </div>
   );
 };
 
