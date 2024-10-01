@@ -11,6 +11,7 @@ import config from './env-config';
 import InvalidConnectionPage from './Components/InvalidConnectionPage';
 import HomePage from './Components/HomePage';
 import PageWrapper from './Components/PageWrapper';
+import AuthCallback from './Auth/AuthCallback';
 
 import './styles/index.css';
 
@@ -34,6 +35,12 @@ const router = createBrowserRouter([
     element: (
       <InvalidConnectionPage />
     )
+  },
+  {
+    path: '/auth-callback',
+    element: (
+      <AuthCallback />
+    )
   }
 ]);
 // degugging purposes only
@@ -48,7 +55,7 @@ root.render(
         domain={AUTH0_DOMAIN}
         clientId={AUTH0_CLIENTID}
         authorizationParams={{
-          redirect_uri: window.location.origin,
+          redirect_uri: `${window.location.origin}/auth-callback`,
           audience: AUTH0_AUDIENCE,
           scope: AUTH0_SCOPE
         }}

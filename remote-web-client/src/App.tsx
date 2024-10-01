@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import BasicControlsPage from "./Components/BasicControlsPage";
-import useAccessToken from "./Auth/useAccessToken";
 import { acceptConnection, getConnection } from "./connection";
 import { Connection } from "./types";
 import ConnectedToDesktop from "./Components/ConnectedToDesktop";
 import Loading from "./Components/Loading";
+import config from "./env-config";
 
 function App() {
-  const { isAuthenticated, loginWithRedirect, logout, isLoading, user } = useAuth0();
-  const accessToken = useAccessToken();
+  const { isAuthenticated, loginWithRedirect, isLoading, user, getAccessTokenSilently } = useAuth0();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,7 +20,15 @@ function App() {
   useEffect(() => {
     if(isLoading || !isAuthenticated || !user) return;
 
-    acceptConnection(connectionId, user, accessToken)
+    let accessToken: string = '';
+    getAccessTokenSilently({
+      authorizationParams: {
+        audience: config.AUTH0_AUDIENCE,
+        scope: config.AUTH0_SCOPE,
+      },
+    })
+      .then((_accessToken: string) => accessToken = _accessToken)
+      .then(() => acceptConnection(connectionId, user, accessToken))
       .then(() => getConnection(connectionId, accessToken))
       .then((c) => setConnection(c))
       .catch((e) => {
@@ -34,20 +41,30 @@ function App() {
     connectionId,
     acceptConnection,
     getConnection,
-    accessToken,
+    getAccessTokenSilently,
     isAuthenticated,
     isLoading,
     user,
     navigate
   ]);
 
-  if (isLoading || !connection) {
+  if (isLoading) {
     return <Loading />;
   }
 
   if (!isAuthenticated || !user) {
-    loginWithRedirect();
+    const originalUrl = window.location.href; // Current URL
+    const url = new URL(originalUrl);
+    const currentRelativePath = url.pathname + url.search;    
+    loginWithRedirect({
+        appState: { returnTo: currentRelativePath } // Pass the original URL as state
+    });
+    
     return <div>Redirecting...</div>;
+  }
+
+  if(!connection) {
+    return <Loading />;
   }
 
   return (
