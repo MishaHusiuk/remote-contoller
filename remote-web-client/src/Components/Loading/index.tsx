@@ -1,24 +1,31 @@
 const Loading = () => {
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-900">
-            <div className="flex flex-col items-center">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="100"
-                    height="100"
+        <div className="flex flex-col justify-center items-center bg-gray-900 text-white p-4">
+            <svg
+                className="animate-spin h-10 w-10 mb-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+            >
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
                     fill="none"
-                    viewBox="0 0 24 24"
-                    className="animate-spin h-12 w-12 text-white"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M2 12a10 10 0 1110 10M12 2v10m0 0h10M12 12H2"
-                    />
-                </svg>
-                <p className="mt-4 text-white text-lg">Завантаження...</p>
-            </div>
+                    className="opacity-25"
+                />
+                <path
+                    d="M12 2v4"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    className="opacity-75"
+                />
+            </svg>
+            <h2 className="text-xl">Завантаження...</h2>
         </div>
     );
 };
