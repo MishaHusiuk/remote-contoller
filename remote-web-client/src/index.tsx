@@ -1,14 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './styles/index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { Auth0Provider } from '@auth0/auth0-react';
-import config from './env-config';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import ReactDOM from 'react-dom/client';
+import { Auth0Provider } from '@auth0/auth0-react';
+import reportWebVitals from './reportWebVitals';
+import App from './App';
+import config from './env-config';
+import InvalidConnectionPage from './Components/InvalidConnectionPage';
+
+import './styles/index.css';
 
 const { AUTH0_DOMAIN, AUTH0_CLIENTID, AUTH0_AUDIENCE, AUTH0_SCOPE } = config;
 
@@ -24,9 +26,9 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/connection-acceptance-error',
+    path: '/invalid-connection',
     element: (
-      <div>Не можливо активувати поточну сесію. Ініціалізуйте нову сесію.</div>
+      <InvalidConnectionPage />
     )
   }
 ]);

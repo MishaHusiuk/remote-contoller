@@ -7,7 +7,7 @@ type ConnectedToDesktopProps = {
 function ConnectedToDesktop({ connection }: ConnectedToDesktopProps) {
     return (
         <div className="mb-4 text-center">
-            <span className="block text-sm text-gray-500">Активне підключення з:</span>
+            <span className="block text-sm text-gray-500">Під'єднано до:</span>
 
             <h2 className="inline-flex items-center justify-center text-xl font-semibold">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6 mr-2">

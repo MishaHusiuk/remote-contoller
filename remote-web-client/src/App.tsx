@@ -7,6 +7,7 @@ import useAccessToken from "./Auth/useAccessToken";
 import { acceptConnection, getConnection } from "./connection";
 import { Connection } from "./types";
 import ConnectedToDesktop from "./Components/ConnectedToDesktop";
+import Footer from "./Components/Footer";
 
 function App() {
   const { isAuthenticated, loginWithRedirect, logout, isLoading, user } = useAuth0();
@@ -27,7 +28,7 @@ function App() {
       .catch((e) => {
         console.error(e);
         
-        navigate('/connection-acceptance-error');
+        navigate('/invalid-connection');
       });
 
   }, [
@@ -57,9 +58,7 @@ function App() {
       </div>
       <ConnectedToDesktop connection={connection} />
       <BasicControlsPage connectionId={connectionId}/>
-      <footer className="text-gray-400 mt-8 text-sm">
-          Розроблено Гузюком Михайлом
-      </footer>
+      <Footer />
     </div>
   );
 }
