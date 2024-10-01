@@ -30,7 +30,6 @@ const Profile = () => {
     return <div>Loading ...</div>;
   }
   
-  console.log('user', user)
   return (
     isAuthenticated && user ? (
       <div className="relative" ref={menuRef}>

@@ -26,8 +26,10 @@ Tracks:
     - UI display what is the name of currently connected computer - done
     - Web app: show currently logged-in user, and log-out button - done
     - When electron app gets closed/disconnected, terminate connection - done
+    - Update invalid connection screen - done
     
-    - Client app should be notified of connection is terminated 
+    - Generate some basic home page, with short app description, ability to download desktop clients for MacOS, and Windows, and short guide how to start working - done
+    - Client app should be notified when connection is terminated 
     - Show main icon in the top-left corner of ui app
 Bugs
 - Connect window can be opened multiple times - done

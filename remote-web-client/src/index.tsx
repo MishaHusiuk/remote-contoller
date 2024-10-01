@@ -9,6 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import App from './App';
 import config from './env-config';
 import InvalidConnectionPage from './Components/InvalidConnectionPage';
+import HomePage from './Components/HomePage';
 
 import './styles/index.css';
 
@@ -17,7 +18,9 @@ const { AUTH0_DOMAIN, AUTH0_CLIENTID, AUTH0_AUDIENCE, AUTH0_SCOPE } = config;
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world!</div>,
+    element: (
+      <HomePage />
+    ),
   },
   {
     path: "/connection",
