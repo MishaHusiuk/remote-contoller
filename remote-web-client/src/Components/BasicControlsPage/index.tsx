@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import useAccessToken from "../../Auth/useAccessToken";
 import { Command } from "../../types";
 
@@ -7,8 +8,9 @@ type BasicControlsPageProps = {
 
 function BasicControlsPage({ connectionId }: BasicControlsPageProps) {
     const accessToken = useAccessToken();
+    const navigate = useNavigate();
     const handleClick = async (command: Command) => {
-        fetch(`/api/connections/${connectionId}/commands`, {
+        const response = await fetch(`/api/connections/${connectionId}/commands`, {
             method: 'POST',
             body: JSON.stringify({
                 commandName: command
@@ -17,7 +19,15 @@ function BasicControlsPage({ connectionId }: BasicControlsPageProps) {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${accessToken}`
             }
-        })
+        });
+        if(response.ok) return;
+        
+        const { error } = await response.json();
+        if (response.status === 400 
+            && error === 'Cannot send commands via non active connection'
+        ) {
+            navigate('/invalid-connection');
+        }
     };
 
     return (

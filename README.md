@@ -27,16 +27,18 @@ Tracks:
     - Web app: show currently logged-in user, and log-out button - done
     - When electron app gets closed/disconnected, terminate connection - done
     - Update invalid connection screen - done
-    
     - Generate some basic home page, with short app description, ability to download desktop clients for MacOS, and Windows, and short guide how to start working - done
-    - Client app should be notified when connection is terminated 
+    - Client app should be notified when connection is terminated - done
+    - Loading screen 
     - Show main icon in the top-left corner of ui app
+    - add favicon
 Bugs
 - Connect window can be opened multiple times - done
 - Close connection window when connection is established - done
 - UI: buttons height and width - done
 
 - When user is not authenticated, and tries to open connection screen, he is not redirected to the connection screen, but to the root screen
+- When user clicks logout on desktop app, connection remains active, and app in the tray is still displayed
 
 - Desktop app: login -> log out -> log in -> new app icon in the tray is added
 - With authentication app stopped responding in local network
