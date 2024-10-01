@@ -56,7 +56,7 @@ const Profile = () => {
                 }
                 className="w-full text-left hover:bg-gray-700 rounded-md px-2 py-1"
               >
-                Logout
+                Вийти
               </button>
             </div>
           </div>
