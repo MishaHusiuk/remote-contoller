@@ -37,12 +37,12 @@ Bugs
 - Close connection window when connection is established - done
 - UI: buttons height and width - done
 - When user is not authenticated, and tries to open connection screen, he is not redirected to the connection screen, but to the root screen - done
-- When user clicks logout on desktop app, connection remains active, and app in the tray is still displayed
+- Desktop app: login -> log out -> log in -> new app icon in the tray is added - done
+- There should be no maximize button on connect window - done
+- When user clicks logout on desktop app, connection remains active, and app in the tray is still displayed - in progress
 
-- Desktop app: login -> log out -> log in -> new app icon in the tray is added
 - With authentication app stopped responding in local network
 - Connect window should be opened near tray
-- There should be no maximize button on connect window
 - UI logout process does not work properly
 - When non-google user's token is validated, the following error occurs: 
 ```

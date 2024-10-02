@@ -18,7 +18,9 @@ async function createAppWindow() {
         height: 300,
         webPreferences: {
             preload: path.join(__dirname, "preload.js")
-        }
+        },
+        resizable: false,  // Disables resizing and removes maximize button
+        minimizable: false
     });
 
     await window.loadFile(path.resolve(__dirname, 'index.html'));
