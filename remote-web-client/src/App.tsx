@@ -7,6 +7,7 @@ import { Connection } from "./types";
 import ConnectedToDesktop from "./Components/ConnectedToDesktop";
 import Loading from "./Components/Loading";
 import config from "./env-config";
+import useDocumentTitle from "./hooks/useDocumentTitle";
 
 function App() {
   const { isAuthenticated, loginWithRedirect, isLoading, user, getAccessTokenSilently } = useAuth0();
@@ -48,6 +49,8 @@ function App() {
     navigate
   ]);
 
+  useDocumentTitle(connection?.controlledDesktopName);
+
   if (isLoading) {
     return <Loading />;
   }
@@ -59,7 +62,7 @@ function App() {
     loginWithRedirect({
         appState: { returnTo: currentRelativePath } // Pass the original URL as state
     });
-    
+
     return <div>Redirecting...</div>;
   }
 

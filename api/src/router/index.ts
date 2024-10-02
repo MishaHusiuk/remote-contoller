@@ -20,6 +20,14 @@ router.get("/", (req: Request, res: Response) => {
   res.send("Ok");
 });
 
+const logger = (req: Request, _: any, next: any) => {
+  if(process.env.DEV_LOGGING) {
+    console.log('path: ', req.originalUrl);
+    console.log(`headers: `, req.headers);
+  }
+  next();
+}
+
 /**
   * @swagger
   * /api/command:
@@ -39,7 +47,7 @@ router.get("/", (req: Request, res: Response) => {
   *       '200':
   *         description: Ok
   */
-router.post("/connections/:connectionId/commands", [checkJwt, checkScopes, (req: Request, res: Response) => {
+router.post("/connections/:connectionId/commands", [logger, checkJwt, checkScopes, (req: Request, res: Response) => {
   const { commandName } = req.body;
   const { connectionId } = req.params;
 
@@ -102,7 +110,7 @@ router.post("/connections/:connectionId/commands", [checkJwt, checkScopes, (req:
 *     security:
 *       - bearerAuth: []
 */
-router.post('/connections', [checkJwt, checkScopes, (req: Request, res: Response) => {
+router.post('/connections', [logger, checkJwt, checkScopes, (req: Request, res: Response) => {
   const { sub: userId = '' } = req.auth?.payload as JwtPayload;
   const { controlledDesktopName } = req.body;
 
@@ -155,7 +163,7 @@ router.post('/connections', [checkJwt, checkScopes, (req: Request, res: Response
 *     security:
 *       - bearerAuth: []
 */
-router.get('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Response) => {
+router.get('/connections/:id', [logger, checkJwt, checkScopes, (req: Request, res: Response) => {
   const { sub: userId } = req.auth?.payload as JwtPayload;
   const { id } = req.params;
 
@@ -230,7 +238,7 @@ router.get('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Respo
 *     tags:
 *       - Connections
 */
-router.patch('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Response) => {
+router.patch('/connections/:id', [logger, checkJwt, checkScopes, (req: Request, res: Response) => {
   const { sub: userId = '' } = req.auth?.payload as JwtPayload;
   const { id } = req.params;
   const { status } = req.body;

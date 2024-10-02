@@ -5,8 +5,8 @@ function HomePage() {
   return (
       <div className="flex-1 flex flex-col items-center justify-center p-8">
         <section className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">Ласкаво просимо до RemoteCTR</h2>
-          <p className="text-lg">Завантажте десктопний клієнт для MacOS або Windows, щоб почати використовувати RemoteCTR.</p>
+          <h2 className="text-4xl font-bold mb-4">Дистанційний Зв'язок</h2>
+          <p className="text-lg italic mb-2">Лише кілька кнопок — безмежні можливості для комунікації з вашою аудиторією!</p>
         </section>
 
         {/* Download Buttons */}

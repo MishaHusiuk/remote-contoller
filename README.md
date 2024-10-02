@@ -30,8 +30,10 @@ Tracks:
     - Generate some basic home page, with short app description, ability to download desktop clients for MacOS, and Windows, and short guide how to start working - done
     - Client app should be notified when connection is terminated - done
     - Loading screen - done
-    - Show main icon in the top-left corner of ui app
-    - add favicon
+    - Show main icon in the top-left corner of ui app - done
+    - Add favicon - done
+    
+    - Translate and adapt Auth0 login page
 Bugs
 - Connect window can be opened multiple times - done
 - Close connection window when connection is established - done
@@ -44,6 +46,7 @@ Bugs
 - When user clicks logout on desktop app, connection remains active, and app in the tray is still displayed - done
 - When non-google user's token is validated, the following error occurs: `InvalidTokenError: Invalid Compact JWS` - done
 
+- When login window is closed app is not closed, but is not accessible
 - With authentication app stopped responding in local network
 
 TechDept:
@@ -54,11 +57,11 @@ TechDept:
 - Reorganise folders in electron app for managing screens
 
 High-risk areas:
+- Changing the design of WEB app - done
 - Test app on windows
 - Publishing desktop app
 - Deployment: make sure auth0 integration work fine
 - Deployement: make sure websockets work fine
-- Changing the design of WEB app
 - Desktop application motonitoring
 
 
