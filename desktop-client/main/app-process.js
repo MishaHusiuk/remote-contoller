@@ -2,7 +2,7 @@ const { app, BrowserWindow, Tray, Menu } = require('electron');
 const path = require('path');
 const { createLogoutWindow } = require('./auth-logout-process'); 
 const { createAppWindow: createConnectionSetupWindow } = require('./connection-setup/process');
-const { getActiveConnection, terminateConnection } = require('../services/connection-service');
+const { getActiveConnection, terminateConnection, stopPollConnectionStatus } = require('../services/connection-service');
 
 let isQuiting;
 let tray;
@@ -71,6 +71,7 @@ function updateTrayMenu() {
                 tray.destroy();
                 destroyWindow();
                 terminateConnection();
+                stopPollConnectionStatus();
                 createLogoutWindow();
             }
         },

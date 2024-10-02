@@ -42,15 +42,9 @@ Bugs
 - Connect window should be opened near tray - done
 - UI logout process does not work properly - done
 - When user clicks logout on desktop app, connection remains active, and app in the tray is still displayed - done
+- When non-google user's token is validated, the following error occurs: `InvalidTokenError: Invalid Compact JWS` - done
 
 - With authentication app stopped responding in local network
-- When non-google user's token is validated, the following error occurs: 
-```
-InvalidTokenError: Invalid Compact JWS
-    at /Users/mishahuziuk/projects/remote-contoller/api/node_modules/express-oauth2-jwt-bearer/dist/index.js:300:19
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at async /Users/mishahuziuk/projects/remote-contoller/api/node_modules/express-oauth2-jwt-bearer/dist/index.js:403:24
-```
 
 TechDept:
 - Convert electron app to typescript and ES modules
