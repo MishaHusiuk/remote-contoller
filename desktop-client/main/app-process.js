@@ -60,7 +60,7 @@ function updateTrayMenu() {
         !activeConnection 
         ? {
             label: 'Connect',
-            click: () => createConnectionSetupWindow()
+            click: () => createConnectionSetupWindow(tray.getBounds())
         }
         : {
             label: 'Disconnect',
