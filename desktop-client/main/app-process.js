@@ -8,9 +8,10 @@ let isQuiting;
 let tray;
 let window;
 const createAppWindow = () => {
+    destroyWindow();
 
     // const icon = nativeImage.createFromPath(path.resolve(__dirname, 'images/main-icon/remote.png'));
-    const win = new BrowserWindow({
+    window = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
@@ -20,12 +21,10 @@ const createAppWindow = () => {
         // icon
     })
 
-    win.loadFile(path.resolve(__dirname, 'index.html'));
-    window = win;
+    window.loadFile(path.resolve(__dirname, 'index.html'));
 
     app.whenReady().then(() => {
         app.on('activate', () => {
-            console.log('activated');
             if (BrowserWindow.getAllWindows().length === 0) createAppWindow();
         })
     
@@ -68,7 +67,12 @@ function updateTrayMenu() {
         },
         {
             label: 'Logout',
-            click: () => createLogoutWindow()
+            click: () => {
+                tray.destroy();
+                destroyWindow();
+                terminateConnection();
+                createLogoutWindow();
+            }
         },
         {
             label: 'Quit',
@@ -80,6 +84,12 @@ function updateTrayMenu() {
         }
     ])
     tray.setContextMenu(menuOptions);
+}
+
+function destroyWindow() {
+    if (!window) return;
+    window.close();
+    window = null;
 }
 
 module.exports = createAppWindow;

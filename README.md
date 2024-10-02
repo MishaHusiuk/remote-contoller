@@ -41,7 +41,7 @@ Bugs
 - There should be no maximize button on connect window - done
 - Connect window should be opened near tray - done
 - UI logout process does not work properly - done
-- When user clicks logout on desktop app, connection remains active, and app in the tray is still displayed - in progress
+- When user clicks logout on desktop app, connection remains active, and app in the tray is still displayed - done
 
 - With authentication app stopped responding in local network
 - When non-google user's token is validated, the following error occurs: 
