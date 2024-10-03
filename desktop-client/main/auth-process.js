@@ -1,4 +1,4 @@
-const { BrowserWindow } = require('electron');
+const { BrowserWindow, app } = require('electron');
 const authService = require('../services/auth-service');
 const createAppWindow = require('../main/app-process');
 
@@ -37,7 +37,7 @@ function createAuthWindow() {
     });
 
     win.on('closed', () => {
-        win = null;
+        app.quit();
     });
 }
 
