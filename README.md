@@ -45,8 +45,9 @@ Bugs
 - UI logout process does not work properly - done
 - When user clicks logout on desktop app, connection remains active, and app in the tray is still displayed - done
 - When non-google user's token is validated, the following error occurs: `InvalidTokenError: Invalid Compact JWS` - done
+- When login window is closed app is not closed, but is not accessible - done
+- When activating connection, first time connection activated, but sending commands fails but works after page reload 
 
-- When login window is closed app is not closed, but is not accessible
 - With authentication app stopped responding in local network
 
 TechDept:

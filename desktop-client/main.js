@@ -39,3 +39,7 @@ app.on('logged-out', () => {
     // terminateConnection();
     createAuthWindow();
 });
+
+app.on('before-quit', () => {
+  terminateConnection();
+});
