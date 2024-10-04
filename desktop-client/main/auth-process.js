@@ -37,7 +37,9 @@ function createAuthWindow() {
     });
 
     win.on('closed', () => {
-        app.quit();
+        if(!authService.getAccessToken()) {
+            app.quit();
+        }
     });
 }
 
