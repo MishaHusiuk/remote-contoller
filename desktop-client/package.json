@@ -1,22 +1,33 @@
 {
   "name": "desktop-client",
   "version": "1.0.0",
-  "description": "Desktop application for remote control",
+  "description": "Дистанційний звязок - ваш асистент для презентацій",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron-forge start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "rebuild": "npm rebuild --runtime=electron --target=31.2.1 --disturl=https://atom.io/download/atom-shell --abi=115"
+    "rebuild": "npm rebuild --runtime=electron --target=31.2.1 --disturl=https://atom.io/download/atom-shell --abi=115",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "author": "Misha Huziuk",
   "license": "ISC",
   "devDependencies": {
+    "@electron-forge/cli": "^7.5.0",
+    "@electron-forge/maker-deb": "^7.5.0",
+    "@electron-forge/maker-rpm": "^7.5.0",
+    "@electron-forge/maker-squirrel": "^7.5.0",
+    "@electron-forge/maker-zip": "^7.5.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.5.0",
+    "@electron-forge/plugin-fuses": "^7.5.0",
+    "@electron/fuses": "^1.8.0",
     "@types/ws": "^8.5.12",
     "electron": "31.2.1",
     "electron-rebuild": "^3.2.9"
   },
   "dependencies": {
     "axios": "^1.7.7",
+    "electron-squirrel-startup": "^1.0.1",
     "jwt-decode": "^4.0.0",
     "keytar": "^7.9.0",
     "qrcode": "^1.5.4",
