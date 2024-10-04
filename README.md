@@ -14,8 +14,12 @@ Tracks:
     - Electron app to poll connection status to initiate websocket request after client acceps request - done
 - Production-ready
     - buy a domain - done
+    - macOS: accessibility safeguard on app startup - done
+    - build electron app for MacOS (M1) - done
+    - set app icon at built time
 
-    - build electron app for 2 platforms: MacOS and Windows
+    - build electron app for MacOS (Intel)
+    - build electron app for Windows
     - test electron app on Windows
     - host application in the cloud
     - upload electron app to s3 and make a web page for downloading it

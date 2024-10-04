@@ -6,8 +6,14 @@ const createAppWindow = require('./main/app-process');
 const authService = require('./services/auth-service');
 const envVariables = require('./env-variables.json');
 const { terminateConnection } = require('./services/connection-service');
+const { accessibilityFeaturesSafeguard } = require('./utils/accessibilityFeaturesSafeguard');
 
 async function showWindow() {
+  try {
+    await accessibilityFeaturesSafeguard();
+  } catch {
+    app.quit();
+  }
   try {
     if (!envVariables.devSkipAuth) {
         await authService.refreshTokens();
