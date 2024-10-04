@@ -4,7 +4,6 @@ const { createLogoutWindow } = require('./auth-logout-process');
 const { createAppWindow: createConnectionSetupWindow } = require('./connection-setup/process');
 const { getActiveConnection, terminateConnection, stopPollConnectionStatus } = require('../services/connection-service');
 
-let isQuiting;
 let tray;
 let window;
 const createAppWindow = () => {
@@ -24,33 +23,13 @@ const createAppWindow = () => {
     window.loadFile(path.resolve(__dirname, 'index.html'));
 
     app.whenReady().then(() => {
-        app.on('activate', () => {
-            if (BrowserWindow.getAllWindows().length === 0) createAppWindow();
-        })
-    
         tray = new Tray(path.resolve(__dirname, '../images/RemoteTemplate@2x.png'));
         tray.on('click', updateTrayMenu);
         tray.on('right-click', updateTrayMenu);
       
         // Initial tray menu setup
         updateTrayMenu();
-    
-        window.on('close', (event) => {
-            if (!isQuiting) {
-                event.preventDefault();
-                window.hide();
-                event.returnValue = false;
-            }
-        });
     })
-
-    app.on('window-all-closed', () => {
-        if (process.platform !== 'darwin') app.quit()
-    })
-    
-    app.on('before-quit', () => {
-        isQuiting = true;
-    });
 };
 
 function updateTrayMenu() {
@@ -77,7 +56,6 @@ function updateTrayMenu() {
         {
             label: 'Quit',
             click: () => {
-                isQuiting = true;
                 terminateConnection();
                 app.quit();
             }
