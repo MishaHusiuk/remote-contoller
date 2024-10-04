@@ -16,6 +16,7 @@ Tracks:
     - buy a domain - done
     - macOS: accessibility safeguard on app startup - done
     - build electron app for MacOS (M1) - done
+    - tray translations - done
     - set app icon at built time
 
     - build electron app for MacOS (Intel)
@@ -24,7 +25,10 @@ Tracks:
     - host application in the cloud
     - upload electron app to s3 and make a web page for downloading it
     - record number of downloads
-    - Translations
+    - Auth0 configurations
+        - login page translations
+        - warning on the login page
+        - custom domain 
 - Misc
     - Show disconnect button when connection is established instead of Connect - done
     - UI display what is the name of currently connected computer - done
@@ -36,8 +40,6 @@ Tracks:
     - Loading screen - done
     - Show main icon in the top-left corner of ui app - done
     - Add favicon - done
-    
-    - Translate and adapt Auth0 login page
 Bugs
 - Connect window can be opened multiple times - done
 - Close connection window when connection is established - done

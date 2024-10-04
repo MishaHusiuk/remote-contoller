@@ -35,15 +35,15 @@ function updateTrayMenu() {
     const menuOptions = Menu.buildFromTemplate([
         !activeConnection 
         ? {
-            label: 'Connect',
+            label: 'Встановити з\'єднання',
             click: () => createConnectionSetupWindow(tray.getBounds())
         }
         : {
-            label: 'Disconnect',
+            label: 'Завершити з\'єднання',
             click: () => terminateConnection()
         },
         {
-            label: 'Logout',
+            label: 'Вийти з акаунту',
             click: () => {
                 destroyWindow();
                 terminateConnection();
@@ -52,7 +52,7 @@ function updateTrayMenu() {
             }
         },
         {
-            label: 'Quit',
+            label: 'Закрити',
             click: () => {
                 terminateConnection();
                 app.quit();
