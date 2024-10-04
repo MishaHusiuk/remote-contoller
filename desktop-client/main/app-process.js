@@ -68,7 +68,6 @@ function updateTrayMenu() {
         {
             label: 'Logout',
             click: () => {
-                tray.destroy();
                 destroyWindow();
                 terminateConnection();
                 stopPollConnectionStatus();
@@ -88,9 +87,14 @@ function updateTrayMenu() {
 }
 
 function destroyWindow() {
-    if (!window) return;
-    window.close();
-    window = null;
+    if (window) {
+        window.close();
+        window = null;
+    };
+
+    if(tray) {
+        tray.destroy();
+    }
 }
 
 module.exports = createAppWindow;
