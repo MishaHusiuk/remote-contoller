@@ -9,7 +9,6 @@ let window;
 const createAppWindow = () => {
     destroyWindow();
 
-    // const icon = nativeImage.createFromPath(path.resolve(__dirname, 'images/main-icon/remote.png'));
     window = new BrowserWindow({
         width: 800,
         height: 600,
@@ -17,7 +16,6 @@ const createAppWindow = () => {
             preload: path.join(__dirname, 'preload.js')
         },
         show: false,
-        // icon
     })
 
     window.loadFile(path.resolve(__dirname, 'index.html'));

@@ -1,4 +1,5 @@
 const { app } = require('electron');
+// const path = require('path');
 
 const { createAuthWindow } = require('./main/auth-process');
 const createAppWindow = require('./main/app-process');
@@ -19,6 +20,11 @@ async function showWindow() {
 
 app.on('ready', () => {
   showWindow();
+  // const iconPath = path.resolve(__dirname, 'images/main-icon/remote.png');
+  // // Set the dock icon on macOS
+  // if (process.platform === 'darwin') {
+  //   app.dock.setIcon(iconPath);
+  // }
 });
 
 // Quit when all windows are closed.
