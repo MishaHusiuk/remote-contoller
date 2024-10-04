@@ -30,6 +30,6 @@ app.on('window-all-closed', () => {
 });
 
 app.on('logged-out', () => {
-    terminateConnection();
+    // terminateConnection();
     createAuthWindow();
 });
