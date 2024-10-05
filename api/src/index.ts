@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import http from 'http';
 import https from 'https';
 import fs from 'fs';
@@ -9,11 +10,10 @@ import swaggerSpec from "./swagger";
 import path from "path";
 import { initWSS } from "./websocket-server";
 
-
-// SSL Certificate paths (mounted inside the container)
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/remotectr.com/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/remotectr.com/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/remotectr.com/chain.pem', 'utf8');
+// SSL Certificate
+const privateKey = process.env.SSL_PRIVATE_KEY;
+const certificate = process.env.SSL_CERTIFICATE;
+const ca = process.env.SSL_CHAIN;
 
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
