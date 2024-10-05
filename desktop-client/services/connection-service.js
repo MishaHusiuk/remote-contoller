@@ -22,7 +22,7 @@ async function initiateConnection() {
 }
 
 async function getConnectionQRCode (connection) {
-  const data = `${envVariables.webAppUrl}/${connection.id}`;
+  const data = `${envVariables.webAppUrl}/connection?id=${connection.id}`;
   return generateQrCode(data);
 }
 
@@ -45,7 +45,7 @@ async function pollConnectionStatus(connectionId, closeConnectionWindow) {
 
     const { status } = response.data;
 
-    if (status === 'accepted') {
+    if (['accepted', 'active'].includes(status)) {
       // Connection is accepted, initiate WebSocket connection
       initWebSocket(connectionId, accessToken);
       setActiveConnection(response.data);
