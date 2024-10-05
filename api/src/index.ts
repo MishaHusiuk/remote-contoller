@@ -1,7 +1,6 @@
 import 'dotenv/config'
 import http from 'http';
 import https from 'https';
-import fs from 'fs';
 import express, { Express } from "express";
 import * as swaggerUI from "swagger-ui-express";
 import logger from 'morgan';
@@ -18,7 +17,7 @@ const ca = process.env.SSL_CHAIN;
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 const app: Express = express();
-// Create HTTPS server
+
 const httpsEnabled = process.env.HTTPS === 'true';
 let server = null;
 if (httpsEnabled) {
@@ -37,7 +36,7 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.use(express.static(path.join(__dirname, '../../remote-web-client/build')));
 // Route all client-side routes to index.html
-app.get('*', (req, res) => {
+app.get('*', (_, res) => {
   res.sendFile(path.join(__dirname, '../../remote-web-client/build', 'index.html'));
 });
 
