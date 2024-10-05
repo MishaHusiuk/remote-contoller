@@ -1,15 +1,19 @@
 const axios = require('axios');
-const envVariables = require('../env-variables.json');
 const { getAccessToken } = require('./auth-service');
 const generateQrCode = require('../utils/generateQrCode');
 const getComputerName = require('../utils/getComputerName');
 const { initWebSocket, disconnect } = require('../websocket');
 
+const {
+  WEB_APP_URL,
+  API_URL
+} = process.env;
+
 async function initiateConnection() {
     const computerName = getComputerName();
     const response = await axios({
         method: 'POST',
-        url: `${envVariables.apiUrl}/connections`,
+        url: `${API_URL}/connections`,
         headers: { 
             'Authorization': `Bearer ${getAccessToken()}`,
             'Content-Type': 'application/json'
@@ -22,7 +26,7 @@ async function initiateConnection() {
 }
 
 async function getConnectionQRCode (connection) {
-  const data = `${envVariables.webAppUrl}/connection?id=${connection.id}`;
+  const data = `${WEB_APP_URL}/connection?id=${connection.id}`;
   return generateQrCode(data);
 }
 
@@ -37,7 +41,7 @@ async function pollConnectionStatus(connectionId, closeConnectionWindow) {
 
   const accessToken = getAccessToken();
   try {
-    const response = await axios.get(`${envVariables.apiUrl}/connections/${connectionId}`, {
+    const response = await axios.get(`${API_URL}/connections/${connectionId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -79,7 +83,7 @@ async function terminateConnection() {
   if(!currentActiveConnection) return;
   const response = await axios({
     method: 'PATCH',
-    url: `${envVariables.apiUrl}/connections/${currentActiveConnection.id}`,
+    url: `${API_URL}/connections/${currentActiveConnection.id}`,
     headers: { 
         'Authorization': `Bearer ${getAccessToken()}`,
         'Content-Type': 'application/json'

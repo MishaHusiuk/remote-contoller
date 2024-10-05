@@ -1,12 +1,14 @@
+require('dotenv').config();
 const { app } = require('electron');
 // const path = require('path');
 
 const { createAuthWindow } = require('./main/auth-process');
 const createAppWindow = require('./main/app-process');
 const authService = require('./services/auth-service');
-const envVariables = require('./env-variables.json');
 const { terminateConnection } = require('./services/connection-service');
 const { accessibilityFeaturesSafeguard } = require('./utils/accessibilityFeaturesSafeguard');
+
+const { DEV_SKIP_AUTH } = process.env;
 
 async function showWindow() {
   try {
@@ -15,7 +17,7 @@ async function showWindow() {
     app.quit();
   }
   try {
-    if (!envVariables.devSkipAuth) {
+    if (!DEV_SKIP_AUTH) {
         await authService.refreshTokens();
     }
     createAppWindow();

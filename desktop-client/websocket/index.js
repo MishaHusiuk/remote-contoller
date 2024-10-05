@@ -1,11 +1,11 @@
-// const WebSocket = require('ws');
 const io = require('socket.io-client');
 const { handleCommand } = require('../handlers');
-const { wsServerUrl } = require('../env-variables.json');
+
+const { WS_URL } = process.env;
 
 let socket = null;
 function initWebSocket(connectionId, accessToken) {
-    socket = io(wsServerUrl, {
+    socket = io(WS_URL, {
         auth: {
             token: accessToken,
             connectionId

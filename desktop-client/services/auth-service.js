@@ -1,15 +1,17 @@
 const { jwtDecode } = require('jwt-decode');
 const axios = require('axios');
 const url = require('url');
-const envVariables = require('../env-variables.json');
 const keytar = require('keytar');
 const os = require('os');
 
-const { apiIdentifier, auth0Domain, clientId } = envVariables;
+const { 
+    AUTH0_DOMAIN,
+    AUTH0_API_IDENTIFIER,
+    AUTH0_CLIENT_ID,
+    AUTH0_REDIRECT_URI,
+    KEYTAR_SERVICE
+} = process.env;
 
-const redirectUri = 'http://localhost/callback';
-
-const keytarService = 'electron-openid-oauth';
 const keytarAccount = os.userInfo().username;
 
 let accessToken = null;
@@ -27,30 +29,30 @@ function getProfile() {
 function getAuthenticationURL() {
     return (
         "https://" +
-        auth0Domain +
+        AUTH0_DOMAIN +
         "/authorize?" +
-        'audience=' + apiIdentifier + '&' +
+        'audience=' + AUTH0_API_IDENTIFIER + '&' +
         "scope=openid profile offline_access send:command&" +
         "response_type=code&" +
         "client_id=" +
-        clientId +
+        AUTH0_CLIENT_ID +
         "&" +
         "redirect_uri=" +
-        redirectUri
+        AUTH0_REDIRECT_URI
     );
 }
 
 async function refreshTokens() {
-    const refreshToken = await keytar.getPassword(keytarService, keytarAccount);
+    const refreshToken = await keytar.getPassword(KEYTAR_SERVICE, keytarAccount);
 
     if (refreshToken) {
         const refreshOptions = {
             method: 'POST',
-            url: `https://${auth0Domain}/oauth/token`,
+            url: `https://${AUTH0_DOMAIN}/oauth/token`,
             headers: { 'content-type': 'application/json' },
             data: {
                 grant_type: 'refresh_token',
-                client_id: clientId,
+                client_id: AUTH0_CLIENT_ID,
                 refresh_token: refreshToken,
             }
         };
@@ -76,14 +78,14 @@ async function loadTokens(callbackURL) {
 
     const exchangeOptions = {
         'grant_type': 'authorization_code',
-        'client_id': clientId,
+        'client_id': AUTH0_CLIENT_ID,
         'code': query.code,
-        'redirect_uri': redirectUri,
+        'redirect_uri': AUTH0_REDIRECT_URI,
     };
 
     const options = {
         method: 'POST',
-        url: `https://${auth0Domain}/oauth/token`,
+        url: `https://${AUTH0_DOMAIN}/oauth/token`,
         headers: {
             'content-type': 'application/json'
         },
@@ -98,7 +100,7 @@ async function loadTokens(callbackURL) {
         refreshToken = response.data.refresh_token;
 
         if (refreshToken) {
-            await keytar.setPassword(keytarService, keytarAccount, refreshToken);
+            await keytar.setPassword(KEYTAR_SERVICE, keytarAccount, refreshToken);
         }
     } catch (error) {
         await logout();
@@ -108,14 +110,14 @@ async function loadTokens(callbackURL) {
 }
 
 async function logout() {
-    await keytar.deletePassword(keytarService, keytarAccount);
+    await keytar.deletePassword(KEYTAR_SERVICE, keytarAccount);
     accessToken = null;
     profile = null;
     refreshToken = null;
 }
 
 function getLogOutUrl() {
-    return `https://${auth0Domain}/v2/logout`;
+    return `https://${AUTH0_DOMAIN}/v2/logout`;
 }
 
 module.exports = {
