@@ -29,10 +29,10 @@ Tracks:
         - setup dns mapping - done
         - update applications to point to deployed application - done
         - test with mobile connection - done
-        - support env variables in api, to safely configure certificates
+        - support env variables in api, to safely configure certificates - done
         - 
     - update server to generate new connection each time connection is initiated
-        - check if there are exiting connections in `initiating` status, update status to `hung` (come up with a better name)
+        - check if there are exiting connections in `initiating` status, update status to `hung` (come up with a better name) - done
     - build electron app for MacOS (Intel)
     - build electron app for Windows
     - test electron app on Windows

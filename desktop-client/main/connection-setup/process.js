@@ -38,10 +38,10 @@ async function createAppWindow(trayBounds) {
     window.setPosition(x, y);
     window.show();
     
-    window.on('close', () => {
-        window = null;
-        stopPollConnectionStatus();
-    });
+    // window.on('close', () => {
+    //     window = null;
+    //     stopPollConnectionStatus();
+    // });
 
     window.on('blur', () => {
         window.hide(); // or use qrWindow.close() if you want to destroy it
@@ -51,6 +51,7 @@ async function createAppWindow(trayBounds) {
 }
 
 function destroyWindow() {
+    stopPollConnectionStatus();
     if (!window) return;
     window.close();
     window = null;

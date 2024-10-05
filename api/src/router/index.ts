@@ -98,7 +98,7 @@ router.post("/connections/:connectionId/commands", [ checkJwt, checkScopes, (req
 *                   type: string
 *                 status:
 *                   type: string
-*                   enum: ['initiating', 'accepted', 'active', 'terminated']
+*                   enum: ['initiating']
 *                 controlledDesktopName:
 *                   type: string
 *       '400':
@@ -149,7 +149,7 @@ router.post('/connections', [checkJwt, checkScopes, (req: Request, res: Response
 *                   type: string
 *                 status:
 *                   type: string
-*                   enum: ['initiating', 'accepted', 'active', 'terminated']
+*                   enum: ['initiating', 'accepted', 'active', 'terminated', 'hungup']
 *                 controlledDesktopName:
 *                   type: string
 *       '401':
@@ -261,7 +261,6 @@ router.patch('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Res
 function sendToWSClient(connection: Connection, message: string) {
   const wss = getInstance();
   wss.to(connection.id).emit('message', message);
-  // wss.emit('message', message);
 };
 
 export default router;

@@ -10,19 +10,19 @@ const {
 } = process.env;
 
 async function initiateConnection() {
-    const computerName = getComputerName();
-    const response = await axios({
-        method: 'POST',
-        url: `${API_URL}/connections`,
-        headers: { 
-            'Authorization': `Bearer ${getAccessToken()}`,
-            'Content-Type': 'application/json'
-        },
-        data: {
-            controlledDesktopName: computerName
-        }
-    })
-    return response.data;
+  const computerName = getComputerName();
+  const response = await axios({
+      method: 'POST',
+      url: `${API_URL}/connections`,
+      headers: { 
+          'Authorization': `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json'
+      },
+      data: {
+          controlledDesktopName: computerName
+      }
+  })
+  return response.data;
 }
 
 async function getConnectionQRCode (connection) {
@@ -55,6 +55,12 @@ async function pollConnectionStatus(connectionId, closeConnectionWindow) {
       setActiveConnection(response.data);
       closeConnectionWindow();
     } else {
+      // stop polling if the status is hungup
+      if(status === 'hungup') {
+        stopPollConnectionStatus();
+        return;
+      };
+
       // Continue polling if status is not accepted
       if(pollingTimer) {
         stopPollConnectionStatus();
