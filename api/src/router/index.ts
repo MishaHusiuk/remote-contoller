@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
+import { JwtPayload } from "jsonwebtoken";
 import { getInstance } from "../websocket-server";
 import { startConnection, getConnection, updateConnectionStatus, Connection } from "../services/connection";
 import { checkJwt, checkScopes } from "../auth";
-import { JwtPayload } from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -20,13 +20,13 @@ router.get("/", (req: Request, res: Response) => {
   res.send("Ok");
 });
 
-const logger = (req: Request, _: any, next: any) => {
-  if(process.env.DEV_LOGGING) {
-    console.log('path: ', req.originalUrl);
-    console.log(`headers: `, req.headers);
-  }
-  next();
-}
+// const logger = (req: Request, _: any, next: any) => {
+//   if(process.env.DEV_LOGGING) {
+//     console.log('path: ', req.originalUrl);
+//     console.log(`headers: `, req.headers);
+//   }
+//   next();
+// }
 
 /**
   * @swagger
@@ -47,7 +47,7 @@ const logger = (req: Request, _: any, next: any) => {
   *       '200':
   *         description: Ok
   */
-router.post("/connections/:connectionId/commands", [logger, checkJwt, checkScopes, (req: Request, res: Response) => {
+router.post("/connections/:connectionId/commands", [ checkJwt, checkScopes, (req: Request, res: Response) => {
   const { commandName } = req.body;
   const { connectionId } = req.params;
 
@@ -110,7 +110,7 @@ router.post("/connections/:connectionId/commands", [logger, checkJwt, checkScope
 *     security:
 *       - bearerAuth: []
 */
-router.post('/connections', [logger, checkJwt, checkScopes, (req: Request, res: Response) => {
+router.post('/connections', [checkJwt, checkScopes, (req: Request, res: Response) => {
   const { sub: userId = '' } = req.auth?.payload as JwtPayload;
   const { controlledDesktopName } = req.body;
 
@@ -163,7 +163,7 @@ router.post('/connections', [logger, checkJwt, checkScopes, (req: Request, res: 
 *     security:
 *       - bearerAuth: []
 */
-router.get('/connections/:id', [logger, checkJwt, checkScopes, (req: Request, res: Response) => {
+router.get('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Response) => {
   const { sub: userId } = req.auth?.payload as JwtPayload;
   const { id } = req.params;
 
@@ -238,7 +238,7 @@ router.get('/connections/:id', [logger, checkJwt, checkScopes, (req: Request, re
 *     tags:
 *       - Connections
 */
-router.patch('/connections/:id', [logger, checkJwt, checkScopes, (req: Request, res: Response) => {
+router.patch('/connections/:id', [checkJwt, checkScopes, (req: Request, res: Response) => {
   const { sub: userId = '' } = req.auth?.payload as JwtPayload;
   const { id } = req.params;
   const { status } = req.body;
@@ -246,9 +246,11 @@ router.patch('/connections/:id', [logger, checkJwt, checkScopes, (req: Request, 
   const connection = getConnection(id);
   if(!connection) {
     res.sendStatus(404);
+    return;
   }
   if(connection?.userId !== userId) {
     res.sendStatus(403);
+    return;
   }
   
   const updatedConnection = updateConnectionStatus(id, status);

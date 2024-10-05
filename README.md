@@ -2,7 +2,13 @@
 
 ## Build
 
+`docker buildx build --platform linux/amd64,linux/arm64 -t mhuziuk/remote-control:version .`
 `docker build --platform linux/amd64 -t test-build .`
+
+`docker tag remote-control:0.0.1 mhuziuk/remote-control:0.0.1`
+`docker push mhuziuk/remote-control:0.0.1`
+
+`docker run -p 443:3001 mhuziuk/remote-control:0.0.5`
 
 ## Project management
 Tracks:
@@ -18,11 +24,15 @@ Tracks:
     - build electron app for MacOS (M1) - done
     - tray translations - done
     - set app icon at built time - done
-
+    
+    - deploy application to cloud
+        - deploy docker container
+        - setup dns mapping
+        - update applications to point to deployed application
+        - test with mobile connection
     - build electron app for MacOS (Intel)
     - build electron app for Windows
     - test electron app on Windows
-    - host application in the cloud
     - upload electron app to s3 and make a web page for downloading it
     - record number of downloads
     - Auth0 configurations
