@@ -1,25 +1,29 @@
 import { auth, requiredScopes } from "express-oauth2-jwt-bearer";
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt, { Algorithm, JwtPayload } from 'jsonwebtoken';
 import JwksRsa from "jwks-rsa";
 import { Socket } from "socket.io";
 import { getConnection } from "../services/connection";
 
 // Your Auth0 configuration
-const AUTH0_DOMAIN = 'dev-63sgbr70.us.auth0.com'; // e.g., 'your-app.auth0.com'
-const AUTH0_AUDIENCE = 'https://remotectr.com/api';
-const AUTH0_ISSUER = `https://${AUTH0_DOMAIN}/`;
+const { 
+  AUTH0_AUDIENCE,
+  AUTH0_ISSUER,
+  AUTH0_SCOPES = '',
+  AUTH0_JWKS_URI = '',
+  AUTH0_JWT_TOKEN_SIGNING_ALGS = ''
+} = process.env;
 
 // exist and be verified against the Auth0 JSON Web Key Set.
 export const checkJwt = auth({
     audience: AUTH0_AUDIENCE,
     issuerBaseURL: AUTH0_ISSUER,
 });
-export const checkScopes = requiredScopes('send:command');
+export const checkScopes = requiredScopes(AUTH0_SCOPES);
 
 const jwksClient = JwksRsa({
   cache: true,
   rateLimit: true,
-  jwksUri: `https://${AUTH0_DOMAIN}/.well-known/jwks.json`,
+  jwksUri: AUTH0_JWKS_URI,
 });
 
 const getKey = (header: any, callback: any) => {
@@ -38,7 +42,7 @@ export const authenticateSocket = (socket: Socket, next: (err?: Error) => void) 
     jwt.verify(token, getKey, {
       audience: AUTH0_AUDIENCE,
       issuer: AUTH0_ISSUER,
-      algorithms: ['RS256'],
+      algorithms: AUTH0_JWT_TOKEN_SIGNING_ALGS.split(',') as Algorithm[],
     }, (err, decoded) => {
       if (err) {
         console.error('JWT Verification Error:', err);

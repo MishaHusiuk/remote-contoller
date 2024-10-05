@@ -19,8 +19,15 @@ const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 const app: Express = express();
 // Create HTTPS server
-const server = https.createServer(credentials, app);
-const port = 3001;
+const httpsEnabled = process.env.HTTPS === 'true';
+let server = null;
+if (httpsEnabled) {
+  server = https.createServer(credentials, app);
+} else {
+  server = http.createServer(app);
+}
+
+const port =  process.env.PORT || 3000;
 
 app.use(express.json())
 app.use(logger('combined'));
@@ -40,5 +47,5 @@ app.get('/ws', (_, res) => {
 initWSS(server);
 
 server.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+  console.log(`[server]: Server is running at ${ httpsEnabled ? 'https' : 'http' }://localhost:${port}`);
 });

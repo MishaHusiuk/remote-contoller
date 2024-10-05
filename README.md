@@ -8,7 +8,7 @@
 `docker tag remote-control:0.0.1 mhuziuk/remote-control:0.0.1`
 `docker push mhuziuk/remote-control:0.0.1`
 
-`docker run -p 443:3001 mhuziuk/remote-control:0.0.5`
+`docker run -p 443:3000 mhuziuk/remote-control:0.0.5`
 
 ## Project management
 Tracks:
