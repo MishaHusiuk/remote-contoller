@@ -24,12 +24,15 @@ Tracks:
     - build electron app for MacOS (M1) - done
     - tray translations - done
     - set app icon at built time - done
-    
-    - deploy application to cloud
-        - deploy docker container
-        - setup dns mapping
-        - update applications to point to deployed application
-        - test with mobile connection
+    - deploy application to cloud - done
+        - deploy docker container - done
+        - setup dns mapping - done
+        - update applications to point to deployed application - done
+        - test with mobile connection - done
+        - support env variables in api, to safely configure certificates
+        - 
+    - update server to generate new connection each time connection is initiated
+        - check if there are exiting connections in `initiating` status, update status to `hung` (come up with a better name)
     - build electron app for MacOS (Intel)
     - build electron app for Windows
     - test electron app on Windows
@@ -39,6 +42,12 @@ Tracks:
         - login page translations
         - warning on the login page
         - custom domain 
+    - Infrastructure automation
+        - GitHub Pull-Request action to build docker container and publish it to registry
+        - GitHub manual-trigger action to deploy docker container to EC2
+        - Cron job to re-generate certificate each N amount of time
+        - Add Terraform config to provision infrastructure (EC2 instance)
+        - GitHub manual-trigger action to deploy terraform infrastructure
 - Misc
     - Show disconnect button when connection is established instead of Connect - done
     - UI display what is the name of currently connected computer - done
@@ -92,3 +101,28 @@ High-risk areas:
     - logic
         - manage directions?
         - throttle/debounce/start-stop events
+
+
+
+## LetsEncrypt
+
+`sudo yum update`
+`sudo yum install certbot`
+`sudo certbot certonly --standalone -d remotectr.com -d www.remotectr.com`
+
+Automatic Certificate Renewal
+Let's Encrypt certificates are valid for 90 days, so you'll need to set up automatic renewal using Certbot.
+
+You can use a cron job on the EC2 instance to renew the certificates and restart your container when the certificate is updated:
+
+Edit the cron jobs:
+
+bash
+Copy code
+sudo crontab -e
+Add the following line to attempt renewal every day and restart Docker if needed:
+
+bash
+Copy code
+0 0 * * * certbot renew --quiet --post-hook "docker restart <container-name>"
+This will check daily for certificate renewal and restart your Docker container if the certificate has been renewed.
