@@ -17,7 +17,7 @@ Tracks:
     - macOS: accessibility safeguard on app startup - done
     - build electron app for MacOS (M1) - done
     - tray translations - done
-    - set app icon at built time
+    - set app icon at built time - done
 
     - build electron app for MacOS (Intel)
     - build electron app for Windows
