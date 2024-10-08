@@ -26,6 +26,30 @@ function handle(command) {
         case "SPACE": 
             robot.keyTap("space");
             break;
+        case "AUDIO_MUTE": 
+            robot.keyTap("audio_mute");
+            break;
+        case "AUDIO_VOLUME_DOWN": 
+            robot.keyTap("audio_vol_down");
+            break;
+        case "AUDIO_VOLUME_UP": 
+            robot.keyTap("audio_vol_up");
+            break;
+        case "AUDIO_PLAY": 
+            robot.keyTap("audio_play");
+            break;
+        case "AUDIO_STOP": 
+            robot.keyTap("audio_stop");
+            break;
+        case "AUDIO_PAUSE": 
+            robot.keyTap("audio_pause");
+            break;
+        case "AUDIO_PREVIOUS": 
+            robot.keyTap("audio_prev");
+            break;
+        case "AUDIO_NEXT": 
+            robot.keyTap("audio_next");
+            break;
         default: 
             console.log('command not recognized');
     }

@@ -43,6 +43,24 @@ router.get("/", (req: Request, res: Response) => {
   *             properties:
   *               commandName:
   *                 type: string
+  *                 enum: [ 
+  *                   'ESC',
+  *                   'ENTER',
+  *                   'TAB',
+  *                   'LEFT',
+  *                   'UP',
+  *                   'RIGHT',
+  *                   'DOWN',
+  *                   'SPACE',
+  *                   'AUDIO_MUTE',
+  *                   'AUDIO_VOLUME_DOWN',
+  *                   'AUDIO_VOLUME_UP',
+  *                   'AUDIO_PLAY',
+  *                   'AUDIO_STOP',
+  *                   'AUDIO_PAUSE',
+  *                   'AUDIO_PREVIOUS',
+  *                   'AUDIO_NEXT'
+  *                 ]
   *     responses: 
   *       '200':
   *         description: Ok
