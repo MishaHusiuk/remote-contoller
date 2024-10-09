@@ -3,11 +3,10 @@ const { getAccessToken } = require('./auth-service');
 const generateQrCode = require('../utils/generateQrCode');
 const getComputerName = require('../utils/getComputerName');
 const { initWebSocket, disconnect } = require('../websocket');
-
 const {
   WEB_APP_URL,
   API_URL
-} = process.env;
+} = require('../environment-variables.json');//process.env;
 
 async function initiateConnection() {
   const computerName = getComputerName();

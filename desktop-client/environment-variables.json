@@ -1,0 +1,12 @@
+{
+    "AUTH0_DOMAIN": "dev-63sgbr70.us.auth0.com",
+    "AUTH0_CLIENT_ID": "BV0tFR2aZBOkzbDtXMAQV14wj95xoEZ1",
+    "AUTH0_API_IDENTIFIER": "https://remotectr.com/api",
+    "AUTH0_REDIRECT_URI": "http://localhost/callback",
+
+    "KEYTAR_SERVICE": "electron-openid-oauth",
+
+    "WEB_APP_URL": "https://remotectr.com",
+    "API_URL": "https://remotectr.com/api",
+    "WS_URL": "wss://remotectr.com/ws"
+}

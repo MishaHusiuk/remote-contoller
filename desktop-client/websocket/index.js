@@ -1,7 +1,7 @@
 const io = require('socket.io-client');
 const { handleCommand } = require('../handlers');
+const { WS_URL } = require('../environment-variables.json'); // process.env;
 
-const { WS_URL } = process.env;
 
 let socket = null;
 function initWebSocket(connectionId, accessToken) {

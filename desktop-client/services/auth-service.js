@@ -3,14 +3,13 @@ const axios = require('axios');
 const url = require('url');
 const keytar = require('keytar');
 const os = require('os');
-
 const { 
     AUTH0_DOMAIN,
     AUTH0_API_IDENTIFIER,
     AUTH0_CLIENT_ID,
     AUTH0_REDIRECT_URI,
     KEYTAR_SERVICE
-} = process.env;
+} = require('../environment-variables.json');//process.env;
 
 const keytarAccount = os.userInfo().username;
 
