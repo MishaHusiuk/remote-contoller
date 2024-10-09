@@ -1,5 +1,6 @@
 const { app } = require('electron');
 // const path = require('path');
+if (require('electron-squirrel-startup')) app.quit();
 
 const { createAuthWindow } = require('./main/auth-process');
 const createAppWindow = require('./main/app-process');
