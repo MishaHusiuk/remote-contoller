@@ -4,7 +4,7 @@
     "AUTH0_API_IDENTIFIER": "https://remotectr.com/api",
     "AUTH0_REDIRECT_URI": "http://localhost/callback",
 
-    "KEYTAR_SERVICE": "electron-openid-oauth",
+    "KEYTAR_SERVICE": "remote-control-openid-oauth",
 
     "WEB_APP_URL": "https://remotectr.com",
     "API_URL": "https://remotectr.com/api",
