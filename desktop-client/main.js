@@ -1,4 +1,5 @@
 const { app } = require('electron');
+app.disableHardwareAcceleration();
 // const path = require('path');
 if (require('electron-squirrel-startup')) app.quit();
 
@@ -11,9 +12,11 @@ const { accessibilityFeaturesSafeguard } = require('./utils/accessibilityFeature
 const { DEV_SKIP_AUTH } = process.env;
 
 async function showWindow() {
+  console.log('starting application');
   try {
     await accessibilityFeaturesSafeguard();
-  } catch {
+  } catch(err) {
+    console.log('accessibility features check failed', err);
     app.quit();
   }
   try {
@@ -22,6 +25,7 @@ async function showWindow() {
     }
     createAppWindow();
   } catch (err) {
+    console.log('error hannened: ', err);
     createAuthWindow();
   }
 }

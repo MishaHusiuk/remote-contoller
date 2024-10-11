@@ -3,9 +3,10 @@ const { systemPreferences } = require('electron');
 
 let interval = null
 async function accessibilityFeaturesSafeguard() {
-    if (!process.platform === 'darwin') return;
+    console.log('process.platform: ', process.platform);
     
     return new Promise((res, rej) => {
+        try {
         let hasAccessibilityAccess = systemPreferences.isTrustedAccessibilityClient(false);
         if (hasAccessibilityAccess) { return res(); }
         // Safely simulate a Shift key press to test or request accessibility
@@ -18,6 +19,9 @@ async function accessibilityFeaturesSafeguard() {
                 return res();
             }
         }, 1000);
+        } catch(err) {
+            rej(err);
+        }
     });
 }
 
