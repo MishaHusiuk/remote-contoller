@@ -3,4 +3,4 @@
 - make sure electron version is fixed in `package.json`
 - run `npx electron-rebuild -f -t prod,optional,dev -w robotjs`
 
-- if the error is `distutils not found`, run this: `brew install python-setuptools`
+- if the error is `distutils not found`, run this: `brew install python-setuptools` or `pip install setuptools`(on windows)
