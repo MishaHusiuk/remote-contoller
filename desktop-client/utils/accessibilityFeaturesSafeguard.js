@@ -3,6 +3,7 @@ const { systemPreferences } = require('electron');
 
 let interval = null
 async function accessibilityFeaturesSafeguard() {
+    if (process.platform !== 'darwin') return;
     console.log('process.platform: ', process.platform);
     
     return new Promise((res, rej) => {
