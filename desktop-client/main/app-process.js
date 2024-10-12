@@ -22,8 +22,14 @@ const createAppWindow = () => {
 
     app.whenReady().then(() => {
         tray = new Tray(path.resolve(__dirname, '../images/RemoteTemplate@2x.png'));
-        tray.on('click', updateTrayMenu);
-        tray.on('right-click', updateTrayMenu);
+        tray.on('click', () => {
+            updateTrayMenu();
+            tray.popUpContextMenu();
+        });
+        tray.on('right-click', () => {
+            updateTrayMenu();
+            tray.popUpContextMenu();
+        });
       
         // Initial tray menu setup
         updateTrayMenu();
