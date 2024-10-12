@@ -8,8 +8,7 @@ const createAppWindow = require('./main/app-process');
 const authService = require('./services/auth-service');
 const { terminateConnection } = require('./services/connection-service');
 const { accessibilityFeaturesSafeguard } = require('./utils/accessibilityFeaturesSafeguard');
-
-const { DEV_SKIP_AUTH } = process.env;
+const { DEV_SKIP_AUTH } = require('./environment-variables.json');
 
 async function showWindow() {
   console.log('starting application');
