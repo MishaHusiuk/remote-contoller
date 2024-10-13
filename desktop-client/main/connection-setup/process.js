@@ -11,11 +11,11 @@ const WINDOW_WIDTH = 270;
 const WINDOW_HEIGHT = 270;
 
 let window = null;
-async function createAppWindow(trayBounds) {
+async function createAppWindow(trayBounds, screenSize) {
     destroyWindow();
     const connection = await initiateConnection();
     const qrImage = await getConnectionQRCode(connection);
-    const { x, y } = calculateWindowPosition(trayBounds);
+    const { x, y } = calculateWindowPosition(trayBounds, screenSize);
 
     window = new BrowserWindow({
         width: WINDOW_WIDTH,
@@ -63,30 +63,26 @@ function calculateWindowPosition(trayBounds) {
     const primaryDisplay = screen.getPrimaryDisplay(); // Get the screen information
     const { width } = primaryDisplay.workAreaSize; // Get screen size
     
-    // Define the dimensions of the QR window
-    const qrWindowWidth = 300;
-    const qrWindowHeight = 400;
-    
     // Calculate the position to open the window near the tray icon
     let x, y;
     
     if (process.platform === 'win32') {
         // Windows: Position above the tray
-        x = trayBounds.x + trayBounds.width / 2 - qrWindowWidth / 2;
-        y = trayBounds.y - qrWindowHeight;  // Open above the tray icon
+        x = trayBounds.x + trayBounds.width / 2 - WINDOW_WIDTH / 2;
+        y = trayBounds.y - WINDOW_HEIGHT;  // Open above the tray icon
     } else if (process.platform === 'darwin') {
         // macOS: Position above the tray
-        x = trayBounds.x + trayBounds.width / 2 - qrWindowWidth / 2;
+        x = trayBounds.x + trayBounds.width / 2 - WINDOW_WIDTH / 2;
         y = trayBounds.y + trayBounds.height + 3;  // Below tray icon on macOS
     } else {
         // Linux: Position above the tray
-        x = trayBounds.x + trayBounds.width / 2 - qrWindowWidth / 2;
-        y = trayBounds.y - qrWindowHeight;
+        x = trayBounds.x + trayBounds.width / 2 - WINDOW_WIDTH / 2;
+        y = trayBounds.y - WINDOW_HEIGHT;
     }
 
     // Ensure the window stays within screen bounds
-    if (x + qrWindowWidth > width) {
-        x = width - qrWindowWidth;
+    if (x + WINDOW_WIDTH > width) {
+        x = width - WINDOW_WIDTH;
     }
     if (x < 0) {
         x = 0;
