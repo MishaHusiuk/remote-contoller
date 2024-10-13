@@ -21,7 +21,11 @@ const createAppWindow = () => {
     window.loadFile(path.resolve(__dirname, 'index.html'));
 
     app.whenReady().then(() => {
-        tray = new Tray(path.resolve(__dirname, '../images/RemoteTemplate@2x.png'));
+        const icon = process.platform === 'win32'
+            ? path.resolve(__dirname, '../images/Remote.ico')
+            : path.resolve(__dirname, '../images/RemoteTemplate@2x.png');
+
+        tray = new Tray(icon);
         tray.on('click', () => {
             updateTrayMenu();
             tray.popUpContextMenu();
