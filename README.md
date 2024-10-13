@@ -8,7 +8,14 @@
 `docker tag remote-control:0.0.1 mhuziuk/remote-control:0.0.1`
 `docker push mhuziuk/remote-control:0.0.1`
 
-`docker run -p 443:3000 mhuziuk/remote-control:0.0.5`
+``` 
+docker run \
+-p 443:3000 
+--env-file /home/ec2-user/.env
+-v /home/ec2-user/cert:/app/api/cert
+-d 
+mhuziuk/remote-control:0.0.7
+```
 
 ## Project management
 Tracks:
