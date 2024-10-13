@@ -77,10 +77,11 @@ Bugs
 
 TechDept:
 - Convert electron app to typescript and ES modules
-- Support .env in api
-- Support .env in electron app
+- Support .env in api - done
+- Support .env in electron app - does not work
 - Store connections in database/redis cache
 - Reorganise folders in electron app for managing screens
+- Use docker secrets or AWS Secret Manager
 
 High-risk areas:
 - Changing the design of WEB app - done
