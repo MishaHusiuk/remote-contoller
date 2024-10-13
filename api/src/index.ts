@@ -8,11 +8,12 @@ import router from "./router";
 import swaggerSpec from "./swagger";
 import path from "path";
 import { initWSS } from "./websocket-server";
+import { readFileSync } from 'fs';
 
 // SSL Certificate
-const privateKey = process.env.SSL_PRIVATE_KEY;
-const certificate = process.env.SSL_CERTIFICATE;
-const ca = process.env.SSL_CHAIN;
+const privateKey = readFileSync('./cert/privkey.pem');
+const certificate = readFileSync('./cert/cert.pem', { encoding: 'utf-8'});
+const ca = readFileSync('./cert/chain.pem', { encoding: 'utf-8'});
 
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
