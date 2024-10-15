@@ -49,4 +49,13 @@ module.exports = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-s3',
+      config: {
+        bucket: 'remote-control-assets',
+        public: true
+      }
+    }
+  ]
 };

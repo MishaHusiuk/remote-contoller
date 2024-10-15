@@ -1,6 +1,6 @@
 {
   "name": "desktop-client",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Дистанційний звязок - ваш асистент для презентацій",
   "main": "main.js",
   "scripts": {
@@ -8,7 +8,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "rebuild": "npm rebuild --runtime=electron --target=31.2.1 --disturl=https://atom.io/download/atom-shell --abi=115",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "publish:darwin-m1": "npm run publish -- --arch=arm64 --platform=darwin",
+    "publish:darwin-intel": "npm run publish -- --arch=x64 --platform=darwin",
+    "publish:windows": "npm run publish -- --arch=x64 --platform=win32"
   },
   "author": "Misha Huziuk",
   "license": "ISC",
@@ -19,6 +23,7 @@
     "@electron-forge/maker-zip": "^7.5.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.5.0",
     "@electron-forge/plugin-fuses": "^7.5.0",
+    "@electron-forge/publisher-s3": "^7.5.0",
     "@electron/fuses": "^1.8.0",
     "@types/ws": "^8.5.12",
     "electron": "31.2.1",
