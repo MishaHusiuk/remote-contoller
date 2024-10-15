@@ -17,7 +17,10 @@ docker run \
 mhuziuk/remote-control:0.0.7
 ```
 
-## Project management
+`npm run make -- --arch=x64 --platform=win32`
+
+
+## To do's
 Tracks:
 - User authentication / Connect to a device - done
     - Adding QR code to the electron app - done
@@ -40,9 +43,9 @@ Tracks:
         - 
     - update server to generate new connection each time connection is initiated
         - check if there are exiting connections in `initiating` status, update status to `hung` (come up with a better name) - done
+    - build electron app for Windows - done
+    - test electron app on Windows - done
     - build electron app for MacOS (Intel)
-    - build electron app for Windows
-    - test electron app on Windows
     - upload electron app to s3 and make a web page for downloading it
     - record number of downloads
     - Auth0 configurations
@@ -89,15 +92,6 @@ TechDept:
 - Store connections in database/redis cache
 - Reorganise folders in electron app for managing screens
 - Use docker secrets or AWS Secret Manager
-
-High-risk areas:
-- Changing the design of WEB app - done
-- Test app on windows
-- Publishing desktop app
-- Deployment: make sure auth0 integration work fine
-- Deployement: make sure websockets work fine
-- Desktop application motonitoring
-
 
 - Mouse support - deprioritized
     - UI:
