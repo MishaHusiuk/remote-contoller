@@ -58,6 +58,9 @@ Tracks:
         - Cron job to re-generate certificate each N amount of time
         - Add Terraform config to provision infrastructure (EC2 instance)
         - GitHub manual-trigger action to deploy terraform infrastructure
+    - Packaging
+        - rename app from `desktop-client` into something more meaningful
+        - when connection is established for the first time, first command always results with `invalid connection` screen
 - Misc
     - Show disconnect button when connection is established instead of Connect - done
     - UI display what is the name of currently connected computer - done
