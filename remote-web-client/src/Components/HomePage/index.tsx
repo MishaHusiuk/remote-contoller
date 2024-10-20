@@ -1,6 +1,3 @@
-import Footer from '../Footer';
-import Profile from '../Profile';
-
 const url = "https://remote-control-assets.s3.amazonaws.com/remote-control/win32/x64/%D0%B4%D0%B8%D1%81%D1%82%D0%B0%D0%BD%D1%86%D1%96%D0%B9%D0%BD%D0%B8%D0%B9-%D0%B7%D0%B2%D1%8F%D0%B7%D0%BE%D0%BA.exe"
 function HomePage() {
   const handleDownload = () => {
@@ -50,23 +47,55 @@ function HomePage() {
         {/* How to Get Started Section */}
         <section className="text-center mb-12">
           <h2 className="text-3xl font-semibold mb-6">Початок роботи</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {/* Placeholder images */}
             <div>
               <img
-                src="https://via.placeholder.com/300x200"
+                src="./images/step1.png"
                 alt="Screenshot 1"
-                className="rounded-lg shadow-md"
+                className="rounded-lg shadow-md w-[300px] object-contain"
               />
-              <p className="mt-2 text-lg">Крок 1: Інсталюйте десктопний клієнт</p>
+              <p className="mt-2 text-lg">1: Запустіть "Дистанційний Зв'язок"</p>
             </div>
             <div>
               <img
-                src="https://via.placeholder.com/300x200"
+                src="./images/step2.png"
                 alt="Screenshot 2"
-                className="rounded-lg shadow-md"
+                className="rounded-lg shadow-md w-[300px] object-contain"
               />
-              <p className="mt-2 text-lg">Крок 2: Створіть акаунт</p>
+              <p className="mt-2 text-lg">2: Створіть акаунт</p>
+            </div>
+            <div>
+              <img
+                src="./images/step3.png"
+                alt="Screenshot 3"
+                className="rounded-lg shadow-md w-[300px] object-contain"
+              />
+              <p className="mt-2 text-lg">3: Встановіть з'єднання</p>
+            </div>
+            <div>
+              <img
+                src="./images/step4.png"
+                alt="Screenshot 4"
+                className="rounded-lg shadow-md w-[300px] object-contain"
+              />
+              <p className="mt-2 text-lg">4: Відскануйте QR код</p>
+            </div>
+            <div>
+              <img
+                src="./images/step5.png"
+                alt="Screenshot 5"
+                className="rounded-lg shadow-md w-[300px] object-contain"
+              />
+              <p className="mt-2 text-lg">5: Увійдіть в ваш акаунт</p>
+            </div>
+            <div>
+              <img
+                src="./images/step6.png"
+                alt="Screenshot 2"
+                className="rounded-lg shadow-md w-[300px] object-contain"
+              />
+              <p className="mt-2 text-lg">6: З'єднання встановлене</p>
             </div>
           </div>
         </section>
